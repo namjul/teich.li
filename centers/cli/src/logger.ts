@@ -50,10 +50,7 @@ export const logger: Logger = {
   },
 };
 
-const canClearViewport = (): boolean =>
-  process.stdout.isTTY === true &&
-  (process.stdout.bytesWritten ?? 0) === 0 &&
-  (process.stderr.bytesWritten ?? 0) === 0;
+const canClearViewport = (): boolean => process.stdout.isTTY === true;
 
 const clearViewportPreservingScrollback = (): void => {
   if (!canClearViewport()) {

@@ -75,7 +75,9 @@ const runStart = async (watchDir?: string): Promise<number | undefined> => {
     : null;
 
   const ilog = createInteractiveLogger(rl);
-  clearConsoleRef = () => ilog.clearScreen();
+  clearConsoleRef = () => {
+    ilog.clearScreen();
+  };
 
   ilog.printStartupBanner({
     clear: true,
