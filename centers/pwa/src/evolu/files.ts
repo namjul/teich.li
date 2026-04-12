@@ -9,7 +9,8 @@ export const filesQuery = evolu.createQuery((db) =>
     .where("path", "is not", null)
     .where("contentHash", "is not", null)
     .$narrowType<{ path: kysely.NotNull; contentHash: kysely.NotNull }>()
-    .orderBy("updatedAt", "desc"),
+    .orderBy("updatedAt", "desc")
+    .orderBy("createdAt", "desc"),
 );
 
 export type FilesRow = typeof filesQuery.Row;
