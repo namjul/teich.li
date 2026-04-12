@@ -16,5 +16,5 @@ export const formatSharedLine = (content: string, at: Date): string => {
   const d = pad2(at.getDate());
   const h = pad2(at.getHours());
   const min = pad2(at.getMinutes());
-  return `${y}-${m}-${d} ${h}:${min}: ${normalized}`;
+  return `${y}-${m}-${d} ${h}:${min} ${normalized}`;
 };
