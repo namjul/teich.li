@@ -169,7 +169,7 @@ export const SettingsPanel = (props: {
 
     props.statusOps.setIdle("resetting…");
     try {
-      await evoluClient.resetAppOwner({ reload: false });
+      await evoluClient.resetAppOwner({ reload: true });
       props.statusOps.setLastAction("reset local owner");
       props.statusOps.setIdle("ready");
       evoluClient.reloadApp();
