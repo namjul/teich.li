@@ -10,6 +10,18 @@ This file provides coding guidelines for AI agents working on this local-first f
 - **CLI** bridges filesystem ↔ Evolu with **change capture** (Filesystem → Evolu) and **state materialization** (Evolu → Filesystem)
 - **PWA** provides web editing interface (reads/writes only Evolu)
 
+## Stack
+
+| Layer | Technology | Docs |
+|-------|-----------|------|
+| Data | Evolu | https://www.evolu.dev/llms-full.txt |
+| Behavior | ZagJS | https://zagjs.com/llms-full.txt |
+| View | SolidJS | https://docs.solidjs.com/llms-full.txt |
+| Styling | Tailwind CSS + daisyUI | https://daisyui.com/llms.txt |
+| Runtime | Bun | https://bun.com/llms-full.txt |
+
+**Rules:** Use signals (SolidJS) — UI behavior comes from state machines (ZagJS) — Bun tooling only
+
 ---
 
 ## Workspace Structure
@@ -379,16 +391,3 @@ git config commit.template .gitmessage
 4. **Loop prevention** - check `row.ownerId === myOwnerId` to avoid echoes
 5. **Atomic operations** - use temp-file + rename pattern for writes
 
----
-
-# Documentation Links
-
-- Evolu: https://www.evolu.dev/llms.txt
-  - https://www.evolu.dev/llms-full.txt
-- SolidJS: https://docs.solidjs.com/llms.txt
-  - https://docs.solidjs.com/llms-full.txt
-- ZagJS: https://zagjs.com/llms.txt
-  - https://zagjs.com/llms-full.txt
-- Bun: https://bun.com/llms.txt
-  - https://bun.com/llms-full.txt
-- daisyUI: https://daisyui.com/llms.txt
