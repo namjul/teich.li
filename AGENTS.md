@@ -10,8 +10,6 @@ This file provides coding guidelines for AI agents working on this local-first f
 - **CLI** bridges filesystem ↔ Evolu with **change capture** (Filesystem → Evolu) and **state materialization** (Evolu → Filesystem)
 - **PWA** provides web editing interface (reads/writes only Evolu)
 
-See [[PROJECT]] for architecture details and [[IMPLEMENTATION_PLAN]] for phases and [[STACK]] for choosen technologies.
-
 ---
 
 ## Workspace Structure
@@ -29,12 +27,6 @@ Every workspace in `centers/` must justify itself as a center:
 - Module centers: Colocated with code (e.g., `centers/cli/src/file-sync/CENTER.md`)
 
 **What qualifies as a center?** See ATTRACTOR_PROTOCOL.md § Center (operational definition)
-
-**Why these rules:**
-- Aligns technical organization (workspaces) with conceptual organization (centers)
-- Prevents utility bloat and arbitrary package proliferation
-- Makes centers explicit and discoverable through CENTER.md files
-- Tracks center evolution through documented interventions
 
 **See:** CENTER_PLANNING.md for center documentation protocol
 
@@ -388,11 +380,8 @@ Agents must:
 
 Never commit autonomously, even if changes seem complete.
 
-**See [COMMIT_CONVENTION.md](./COMMIT_CONVENTION.md) for complete documentation.**
+### Format
 
-### Quick Reference
-
-**Format:**
 ```
 <type>(<scope>): <subject>
 <body>
@@ -400,13 +389,13 @@ Center-Impact: ...
 Contact: ...
 ```
 
-**Common types:** `strengthen`, `create`, `dissolve`, `revision`, `simplify`, `refactor`, `chore`
+**Types:** `strengthen`, `create`, `dissolve`, `revision`, `simplify`, `refactor`, `chore`, `unfolding`, `repair`
 
 **Required sections:**
 - `Center-Impact:` for non-trivial changes (which centers strengthened/weakened/created/dissolved)
 - `Contact:` with both `Success-if:` and `Failure-if:` conditions
 
-**Contact test patterns for this project:**
+**Contact test patterns:**
 - Self-experience: "I can modify code 1 week later without re-reading"
 - Binary: "Tests pass, no behavior changes"
 - Comparative: "Code reduces from 340 to <200 lines"
@@ -429,6 +418,22 @@ Contact:
 ```bash
 git config commit.template .gitmessage
 ```
+
+### Anti-Patterns
+
+**Mythology without operational definitions** — "make sync feel more alive" has no falsifiable meaning. Use measurable outcomes: latency, line count, crash count, self-experience after 1 week.
+
+**Missing failure condition** — `Failure-if: [not specified]` is mythology. Every contact test must state what would prove it wrong.
+
+**Post-hoc justification** — writing `Success-if: Feature works` after seeing it work. Contact tests are hypotheses, written before implementation.
+
+### When to Skip Contact Tests
+
+- **Trivial changes** (typo, formatting, dep bump): use `Center-Impact: None`
+- **Pure deletions**: binary test suffices — "does anything break?"
+- **Obvious failures**: compilation errors, test failures (built-in feedback)
+- **Exploratory commits**: mark `Status: Exploratory — contact test after learning`
+- **Docs-only**: unless claiming "better docs" (that claim needs a test)
 
 ---
 
