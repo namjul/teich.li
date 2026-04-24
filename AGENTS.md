@@ -442,27 +442,14 @@ git config commit.template .gitmessage
 
 ---
 
-## Implementation Phases
+# Documentation Links
 
-Follow IMPLEMENTATION_PLAN.md strictly:
-- **Phase 0:** Foundations (single device, no replication)
-- **Phase 1:** Add state materialization (single device)
-- **Phase 2:** Multi-device replication
-- **Phase 3:** Conflict detection
-- **Phase 4:** Deletion handling
-- **Phase 5:** Stability hardening
-- **Phase 6:** PWA integration
-- **Phase 7:** Edge case testing
-- **Phase 8:** Observability (CLI commands)
-
-Always implement features in phase order. Do not skip ahead.
-
----
-
-## Questions or Clarifications
-
-Refer to:
-- PROJECT.md for architecture and principles
-- STACK.md for technology choices
-- IMPLEMENTATION_PLAN.md for detailed phases
-- DOCS.md for external documentation links
+- Evolu: https://www.evolu.dev/llms.txt
+  - https://www.evolu.dev/llms-full.txt
+- SolidJS: https://docs.solidjs.com/llms.txt
+  - https://docs.solidjs.com/llms-full.txt
+- ZagJS: https://zagjs.com/llms.txt
+  - https://zagjs.com/llms-full.txt
+- Bun: https://bun.com/llms.txt
+  - https://bun.com/llms-full.txt
+- daisyUI: https://daisyui.com/llms.txt
