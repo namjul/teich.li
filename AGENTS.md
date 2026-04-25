@@ -211,6 +211,18 @@ original-file.conflict-<ownerId>-<timestamp>.md
 
 ---
 
+## ⚠ Design warnings
+
+Before committing a change, consider these questions. If any apply, name the cost in the commit body.
+
+**Responsiveness** — Can users still tell what their actions did? If this change introduces delay, ambiguity, or silence between action and visible response, name it.
+
+**Continuity after correction** — If a user makes a mistake and corrects it, do they land somewhere they can continue from, or just somewhere technically restored? Does the approach preserve enough context that users don't lose their thread?
+
+**Exploratory capacity** — Does this narrow what users can discover or do by accident? Interventions that increase precision often reduce exploration. If this one does, name that cost explicitly.
+
+---
+
 ## Testing Guidelines
 
 - **Unit tests:** For pure functions (hashing, validation, utilities)
