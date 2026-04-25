@@ -43,7 +43,8 @@ Response schema: `{ ok: boolean; output: string }` — `output` is the text to d
 - **WHEN** the user types a shortcut key + Enter while attached
 - **THEN** the attach client sends the corresponding JSON command over the socket
 - **THEN** the daemon executes the command and sends a JSON response
-- **THEN** the attach client prints `response.output` to stdout
+- **THEN** if `response.ok` is `true`, the attach client prints `response.output` to stdout
+- **THEN** if `response.ok` is `false`, the attach client prints `response.output` to stderr
 
 #### Scenario: Unknown or malformed command
 
@@ -58,8 +59,10 @@ The attach client SHALL call `bindShortcuts` with `isInteractive: true` against 
 #### Scenario: Mnemonic restore (`p` shortcut)
 
 - **WHEN** the user types `p` + Enter while attached
+- **THEN** the attach client defers the `readline.question` call via `setImmediate` before invoking it — calling `readline.question` directly inside a `line` event handler triggers Node's readline re-entrancy bug, consuming the next input line as the question answer
 - **THEN** the attach client prompts for mnemonic words via `readline.question`
-- **THEN** the client sends `{ type: "restoreMnemonic", mnemonic: "<collected words>" }` to the daemon
+- **THEN** the client applies `normalizeMnemonicInput` to the collected string before sending (handling embedded newlines and extra whitespace from password-manager pastes)
+- **THEN** the client sends `{ type: "restoreMnemonic", mnemonic: "<normalized words>" }` to the daemon
 - **THEN** the daemon calls `session.restoreMnemonic(mnemonic)` and returns the result string
 
 ### Requirement: Detach without stopping daemon

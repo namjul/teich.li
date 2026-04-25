@@ -31,12 +31,12 @@ The `--log` flag is the daemon mode signal: when present, `txtatelier start` red
 
 - **WHEN** the user runs `txtatelier stop` and a daemon is running for that watch directory
 - **THEN** SIGTERM is sent to the daemon PID
-- **THEN** the CLI polls until the process is gone and exits 0
+- **THEN** the CLI polls until the process is gone, prints `Stopped txtatelier (pid <N>)`, and exits 0
 
 #### Scenario: Forceful stop on timeout
 
 - **WHEN** the daemon does not exit within the SIGTERM timeout
-- **THEN** SIGKILL is sent and the CLI exits 0
+- **THEN** SIGKILL is sent, the CLI prints `Stopped txtatelier (pid <N>) [forced]`, and exits 0
 
 #### Scenario: Stop when not running
 
@@ -72,7 +72,7 @@ State file schema:
 - `socketPath`: absolute path to the Unix socket
 - `logPath`: absolute path to the daemon log file
 - `startedAt`: ISO 8601 timestamp of daemon start
-- `updatedAt`: ISO 8601 timestamp, refreshed every 30 seconds
+- `updatedAt`: ISO 8601 timestamp, refreshed every 30 seconds; set to `startedAt` on the initial write so `ps` always has a valid value before the first heartbeat fires
 
 #### Scenario: State file written at startup
 
@@ -111,6 +111,11 @@ Artifacts under that directory:
 
 - **WHEN** the user runs `txtatelier start --watch-dir ~/notes` and `txtatelier start --watch-dir ~/journal`
 - **THEN** each daemon writes to its own instance directory with no filename collisions
+
+#### Scenario: Hash collision detected at startup
+
+- **WHEN** a daemon starts and the derived instance directory already contains a state file whose `watchDir` does not match the resolved watch dir (8-char hash collision)
+- **THEN** the daemon logs an error identifying both watch dirs and exits with a non-zero code rather than overwriting the conflicting state
 
 ### Requirement: Default command shows help
 

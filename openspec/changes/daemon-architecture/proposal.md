@@ -4,7 +4,7 @@ txtatelier currently blocks the terminal and dies when that terminal closes, tyi
 
 ## What Changes
 
-- **BREAKING**: `txtatelier` default command changes from foreground start to showing help and exiting 0
+- **BREAKING** (semver-major): `txtatelier` default command changes from foreground start to showing help and exiting 0 — existing shell scripts or startup hooks invoking bare `txtatelier` will silently stop syncing
 - New `txtatelier start [--watch-dir]` command launches a detached background daemon
 - New `txtatelier stop [--watch-dir]` command stops one running instance (not all)
 - New `txtatelier status` command lists all running instances with watch dir, PID, and last heartbeat time

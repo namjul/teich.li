@@ -194,7 +194,7 @@ The attach client provides these callbacks as socket-command wrappers (e.g. `sho
 
 ### Clipboard fallback removed from mnemonic restore
 
-**Decision:** The clipboard fallback in `readMnemonicLine` (the empty-line → `clipboard.readSync()` path) is removed. Users type the mnemonic directly. The `clipboardy` dependency is dropped entirely. In the new attach model, the client collects the full mnemonic string via `readline.question` and sends it as `{ type: "restoreMnemonic", mnemonic: string }` — the daemon calls `session.restoreMnemonic(mnemonic)` directly with no readline callback.
+**Decision:** The clipboard fallback in `readMnemonicLine` (the empty-line → `clipboard.readSync()` path) is removed. Users type the mnemonic directly. The `clipboardy` dependency is dropped entirely. In the new attach model, the client collects the full mnemonic string via `readline.question`, applies `normalizeMnemonicInput` to the collected string (preserving handling of embedded newlines and extra whitespace from password-manager pastes), and sends the normalized result as `{ type: "restoreMnemonic", mnemonic: string }` — the daemon calls `session.restoreMnemonic(mnemonic)` directly with no readline callback.
 
 **Rationale:** The clipboard fallback was a terminal convenience that adds complexity with no benefit in the new client-collects-then-sends model. `session.restoreMnemonic` signature changes from `(readLine: ReadLineFn) => Promise<void>` to `(mnemonic: string) => Promise<string>`.
 
@@ -261,6 +261,8 @@ The attach client provides these callbacks as socket-command wrappers (e.g. `sho
 **Decision:** `txtatelier logs` is not implemented. The log file path is stored in the state file; users can open it directly.
 
 **Rationale:** The command would only add value for reading historical output before an attach connection — a narrow use case that doesn't justify the implementation. `txtatelier attach` covers real-time observation.
+
+**Known gap:** When a daemon has crashed, `ps` cleans up the stale state file, so the log path is no longer discoverable without knowing the instance hash. A `txtatelier logs --watch-dir <path>` that derives and prints the log path (without tailing) would be a ~5-line addition and would cover crash investigation. Deferred — not in scope for this change.
 
 ---
 

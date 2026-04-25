@@ -8,3 +8,8 @@ The instance lock SHALL use the daemon state file combined with PID liveness che
 
 - **WHEN** a previous process crashed without removing the state file and the stored PID is no longer alive
 - **THEN** a new `txtatelier start` for the same watch directory removes the stale state file and starts successfully
+
+#### Scenario: Live daemon already running
+
+- **WHEN** a state file exists for the resolved watch directory and `kill(pid, 0)` succeeds for the stored PID
+- **THEN** the instance is considered live; `txtatelier start` prints an informational message identifying the running instance and exits 0 without spawning a new daemon
