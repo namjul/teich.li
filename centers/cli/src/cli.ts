@@ -1,6 +1,6 @@
-#!/usr/bin/env -S node --experimental-strip-types --no-warnings
+#!/usr/bin/env -S bun
 import * as readline from "node:readline";
-import { Command, Option, runExit } from "clipanion";
+import { defineCommand, runMain } from "citty";
 import packageJson from "../package.json" with { type: "json" };
 import {
   createOwnerSession,
@@ -134,62 +134,50 @@ const runStart = async (watchDir?: string): Promise<number | undefined> => {
   return undefined;
 };
 
-abstract class BaseCommand extends Command {
-  watchDir = Option.String("--watch-dir", {
+const watchDirArg = {
+  "watch-dir": {
+    type: "string" as const,
     description: "Override the default watched directory",
-  });
-}
+  },
+};
 
-class StartCommand extends BaseCommand {
-  static override paths = [Command.Default];
-  static override usage = Command.Usage({
-    description:
-      "Local-first file synchronization CLI. Runs file sync until interrupted.",
-  });
-
-  async execute(): Promise<number | undefined> {
-    return runStart(this.watchDir);
-  }
-}
-
-class OwnerCommand extends BaseCommand {
-  static override paths = [["owner"]];
-  static override usage = Command.Usage({
+const ownerCommand = defineCommand({
+  meta: {
+    name: "owner",
     description:
       "Manage owner identity (non-interactive). Prefer default start + s / p / d shortcuts in a TTY.",
-  });
-
-  show = Option.Boolean("--show", {
-    description: "Show owner mnemonic",
-  });
-  where = Option.Boolean("--where", {
-    description: "Show path of owner/mnemonic files",
-  });
-  reset = Option.Boolean("--reset", {
-    description: "Reset owner (destructive)",
-  });
-  yes = Option.Boolean("--yes", {
-    description: "Confirm destructive operation (for --reset)",
-  });
-
-  async execute(): Promise<number> {
+  },
+  args: {
+    ...watchDirArg,
+    show: { type: "boolean" as const, description: "Show owner mnemonic" },
+    where: {
+      type: "boolean" as const,
+      description: "Show path of owner/mnemonic files",
+    },
+    reset: { type: "boolean" as const, description: "Reset owner (destructive)" },
+    yes: {
+      type: "boolean" as const,
+      description: "Confirm destructive operation (for --reset)",
+    },
+  },
+  async run({ args }) {
     const session = await createOwnerSession({
-      ...(this.watchDir ? { watchDir: this.watchDir } : {}),
+      ...(args["watch-dir"] ? { watchDir: args["watch-dir"] } : {}),
       subscribeFilesShard: false,
     });
 
-    if (this.show) {
+    if (args.show) {
       await showOwnerMnemonic(session);
       process.exit(0);
     }
 
-    if (this.where) {
+    if (args.where) {
       await showOwnerContext(session);
       process.exit(0);
     }
 
-    if (this.reset) {
-      if (!this.yes) {
+    if (args.reset) {
+      if (!args.yes) {
         console.error(
           "Reset is destructive. Re-run with: txtatelier owner --reset --yes",
         );
@@ -202,15 +190,37 @@ class OwnerCommand extends BaseCommand {
 
     console.error("No action specified. Use --help to see available options.");
     process.exit(1);
-  }
-}
-
-void runExit(
-  {
-    binaryName: packageJson.name,
-    binaryLabel: "TXTAelier",
-    binaryVersion: packageJson.version,
-    enableColors: false,
   },
-  [StartCommand, OwnerCommand],
+});
+
+const startCommand = defineCommand({
+  meta: {
+    name: "start",
+    description:
+      "Local-first file synchronization CLI. Runs file sync until interrupted.",
+  },
+  args: watchDirArg,
+  async run({ args }) {
+    const exitCode = await runStart(args["watch-dir"]);
+    if (exitCode !== undefined) {
+      process.exit(exitCode);
+    }
+  },
+});
+
+void runMain(
+  defineCommand({
+    meta: {
+      name: packageJson.name,
+      version: packageJson.version,
+      description:
+        "Local-first file synchronization CLI. Runs file sync until interrupted.",
+    },
+    args: watchDirArg,
+    default: "start",
+    subCommands: {
+      start: startCommand,
+      owner: ownerCommand,
+    },
+  }),
 );
