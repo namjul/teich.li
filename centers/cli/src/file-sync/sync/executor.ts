@@ -4,14 +4,14 @@
 import { unlink } from "node:fs/promises";
 import { join } from "node:path";
 import { ok, type Result, sqliteTrue, tryAsync, trySync } from "@evolu/common";
-import { logger } from "../../logger";
+import { logger } from "../../logger.ts";
 import {
   clearTrackedHash as clearTrackedHashState,
   setTrackedHash as setTrackedHashState,
-} from "../state";
-import { writeFileAtomic } from "../write";
-import type { SyncAction } from "./actions";
-import type { FileSyncContext } from "./context";
+} from "../state.ts";
+import { writeFileAtomic } from "../write.ts";
+import type { SyncAction } from "./actions.ts";
+import type { FileSyncContext } from "./context.ts";
 
 interface ExecutionError {
   readonly type: "ExecutionFailed";

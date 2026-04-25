@@ -3,9 +3,9 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { sqliteTrue } from "@evolu/common";
 import { afterEach, beforeEach, expect, test } from "vitest";
-import { MAX_FILE_SIZE_BYTES } from "../constants";
-import { resetEvolu } from "../evolu";
-import { defaultRelayUrl, startFileSync } from "../index";
+import { MAX_FILE_SIZE_BYTES } from "../constants.ts";
+import { resetEvolu } from "../evolu.ts";
+import { defaultRelayUrl, startFileSync } from "../index.ts";
 
 let tempDir: string;
 

@@ -1,6 +1,6 @@
 import * as Evolu from "@evolu/common";
 import type { TimestampBytes } from "@evolu/common/local-first";
-import type { FileId, FilePath, Schema } from "./evolu-schema";
+import type { FileId, FilePath, Schema } from "./evolu-schema.ts";
 
 type EvoluDatabase = Evolu.Evolu<typeof Schema>;
 

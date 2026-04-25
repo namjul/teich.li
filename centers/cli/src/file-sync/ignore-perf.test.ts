@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { isIgnoredRelativePath } from "./ignore";
+import { isIgnoredRelativePath } from "./ignore.ts";
 
 test("performance: handles 10000 path checks efficiently", () => {
   const paths = [

@@ -9,11 +9,11 @@ import {
   type Result,
   tryAsync,
 } from "@evolu/common";
-import { createFielsFromPathQuery } from "../evolu-queries";
-import type { Schema } from "../evolu-schema";
-import { computeFileHash } from "../hash";
-import { getTrackedHash } from "../state";
-import type { ChangeCaptureState, MaterializationState } from "./state-types";
+import { createFielsFromPathQuery } from "../evolu-queries.ts";
+import type { Schema } from "../evolu-schema.ts";
+import { computeFileHash } from "../hash.ts";
+import { getTrackedHash } from "../state.ts";
+import type { ChangeCaptureState, MaterializationState } from "./state-types.ts";
 
 type EvoluDatabase = Evolu<typeof Schema>;
 

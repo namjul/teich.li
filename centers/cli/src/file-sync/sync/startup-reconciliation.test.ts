@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { decideReconcileAction } from "./startup-reconciliation";
+import { decideReconcileAction } from "./startup-reconciliation.ts";
 
 describe("decideReconcileAction - pure reconciliation logic", () => {
   const content = "test content";

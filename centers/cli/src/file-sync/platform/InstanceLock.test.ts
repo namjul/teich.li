@@ -2,7 +2,7 @@ import { mkdtemp } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, test } from "vitest";
-import { createInstanceLock } from "./InstanceLock";
+import { createInstanceLock } from "./InstanceLock.ts";
 
 describe("createInstanceLock", () => {
   let dir: string | undefined;

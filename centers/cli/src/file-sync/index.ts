@@ -18,11 +18,11 @@ import { deriveShardOwner } from "@evolu/common/local-first";
 import { FILES_SHARD } from "@txtatelier/sync-invariants";
 import envPaths from "env-paths";
 import untildify from "untildify";
-import { env } from "../env";
-import { logger } from "../logger";
-import type { FlushError } from "./errors";
-import { createEvoluClient } from "./evolu";
-import type { Schema } from "./evolu-schema";
+import { env } from "../env.ts";
+import { logger } from "../logger.ts";
+import type { FlushError } from "./errors.ts";
+import { createEvoluClient } from "./evolu.ts";
+import type { Schema } from "./evolu-schema.ts";
 import {
   captureChange,
   type FileSyncContext,
@@ -31,8 +31,8 @@ import {
   reconcileStartupEvoluState,
   reconcileStartupFilesystemState,
   startStateMaterialization,
-} from "./sync/index";
-import { startWatching } from "./watch";
+} from "./sync/index.ts";
+import { startWatching } from "./watch.ts";
 
 const paths = envPaths("txtatelier");
 

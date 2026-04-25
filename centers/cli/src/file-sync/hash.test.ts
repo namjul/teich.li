@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { computeContentHash, computeHash } from "./hash";
+import { computeContentHash, computeHash } from "./hash.ts";
 
 describe("computeHash - pure byte hashing", () => {
   test("computes hash from bytes", async () => {

@@ -3,7 +3,7 @@
 
 import { detectConflict as detectConflictFromInvariants } from "@txtatelier/sync-invariants";
 import { basename, dirname, extname, join } from "node:path";
-import { writeFileAtomic } from "./write";
+import { writeFileAtomic } from "./write.ts";
 
 /**
  * Re-export for callers that only need 3-way math (tests, legacy imports).

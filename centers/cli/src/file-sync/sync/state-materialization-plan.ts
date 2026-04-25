@@ -2,16 +2,16 @@
 // No I/O - just data transformation
 
 import { classifyRemoteChange } from "@txtatelier/sync-invariants";
-import { generateConflictPath } from "../conflicts";
-import type { SyncAction } from "./actions";
+import { generateConflictPath } from "../conflicts.ts";
+import type { SyncAction } from "./actions.ts";
 import {
   createConflict,
   log,
   setTrackedHash,
   skip,
   writeFile,
-} from "./actions";
-import type { MaterializationState } from "./state-types";
+} from "./actions.ts";
+import type { MaterializationState } from "./state-types.ts";
 
 /**
  * Plan what actions to take when Evolu state changes.

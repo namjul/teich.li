@@ -19,9 +19,9 @@ import {
 import { deriveShardOwner } from "@evolu/common/local-first";
 import { FILES_SHARD } from "@txtatelier/sync-invariants";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
-import { resetEvolu } from "./evolu";
-import { computeContentHash } from "./hash";
-import { defaultRelayUrl, type FileSyncSession, startFileSync } from "./index";
+import { resetEvolu } from "./evolu.ts";
+import { computeContentHash } from "./hash.ts";
+import { defaultRelayUrl, type FileSyncSession, startFileSync } from "./index.ts";
 
 let tempDir: string;
 

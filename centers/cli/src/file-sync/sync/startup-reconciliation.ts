@@ -1,24 +1,24 @@
 import { mkdir, readdir } from "node:fs/promises";
 import { join, relative } from "node:path";
 import { err, ok, type Result } from "@evolu/common";
-import { logger } from "../../logger";
-import type { ChangeCaptureError } from "../errors";
+import { logger } from "../../logger.ts";
+import type { ChangeCaptureError } from "../errors.ts";
 import {
   createAllFileRecordsQuery,
   createAllFilesQuery,
   createAllSyncStateQuery,
   createDeletedPathsQuery,
   type FileRow,
-} from "../evolu-queries";
-import type { FilePath } from "../evolu-schema";
-import { isIgnoredRelativePath } from "../ignore";
-import { captureChange } from "./change-capture";
-import { isTxtFile } from "./change-capture-plan";
-import type { FileSyncContext } from "./context";
-import { executePlan } from "./executor";
-import { collectMaterializationState } from "./state-collector";
-import { applyRemoteDeletionToFilesystem } from "./state-materialization";
-import { planStateMaterialization } from "./state-materialization-plan";
+} from "../evolu-queries.ts";
+import type { FilePath } from "../evolu-schema.ts";
+import { isIgnoredRelativePath } from "../ignore.ts";
+import { captureChange } from "./change-capture.ts";
+import { isTxtFile } from "./change-capture-plan.ts";
+import type { FileSyncContext } from "./context.ts";
+import { executePlan } from "./executor.ts";
+import { collectMaterializationState } from "./state-collector.ts";
+import { applyRemoteDeletionToFilesystem } from "./state-materialization.ts";
+import { planStateMaterialization } from "./state-materialization-plan.ts";
 
 /**
  * Fatal errors that prevent reconciliation from proceeding.

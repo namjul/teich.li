@@ -10,9 +10,9 @@ import {
   tryAsync,
 } from "@evolu/common";
 import type { TimestampBytes } from "@evolu/common/local-first";
-import { logger } from "../../logger";
-import { createConflictFile } from "../conflicts";
-import type { StateMaterializationError } from "../errors";
+import { logger } from "../../logger.ts";
+import { createConflictFile } from "../conflicts.ts";
+import type { StateMaterializationError } from "../errors.ts";
 import {
   createAllFilesQuery,
   createAllSyncStateQuery,
@@ -22,15 +22,15 @@ import {
   createHistoryCursorQuery,
   createLatestHistoryQuery,
   type FileRow,
-} from "../evolu-queries";
-import type { FileId } from "../evolu-schema";
-import { computeFileHash } from "../hash";
-import { isIgnoredRelativePath } from "../ignore";
-import { clearTrackedHash, getTrackedHash } from "../state";
-import type { EvoluDatabase, FileSyncContext } from "./context";
-import { executePlan } from "./executor";
-import { collectMaterializationState } from "./state-collector";
-import { planStateMaterialization } from "./state-materialization-plan";
+} from "../evolu-queries.ts";
+import type { FileId } from "../evolu-schema.ts";
+import { computeFileHash } from "../hash.ts";
+import { isIgnoredRelativePath } from "../ignore.ts";
+import { clearTrackedHash, getTrackedHash } from "../state.ts";
+import type { EvoluDatabase, FileSyncContext } from "./context.ts";
+import { executePlan } from "./executor.ts";
+import { collectMaterializationState } from "./state-collector.ts";
+import { planStateMaterialization } from "./state-materialization-plan.ts";
 
 export interface StateMaterializationOptions {
   readonly onConflictArtifactCreated?: (absolutePath: string) => Promise<void>;

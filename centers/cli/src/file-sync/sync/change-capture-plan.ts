@@ -2,8 +2,8 @@
 // No I/O - just data transformation
 
 import { extname } from "node:path";
-import { isIgnoredRelativePath } from "../ignore";
-import type { SyncAction } from "./actions";
+import { isIgnoredRelativePath } from "../ignore.ts";
+import type { SyncAction } from "./actions.ts";
 import {
   clearTrackedHash,
   insertEvolu,
@@ -12,8 +12,8 @@ import {
   setTrackedHash,
   skip,
   updateEvolu,
-} from "./actions";
-import type { ChangeCaptureState } from "./state-types";
+} from "./actions.ts";
+import type { ChangeCaptureState } from "./state-types.ts";
 
 const TEXT_EXTENSIONS = new Set([".txt", ".md"]);
 

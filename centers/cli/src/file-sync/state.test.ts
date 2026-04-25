@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { generateStateId } from "./state";
+import { generateStateId } from "./state.ts";
 
 describe("generateStateId - pure ID generation", () => {
   test("generates deterministic ID from path", () => {

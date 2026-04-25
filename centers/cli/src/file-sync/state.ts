@@ -9,9 +9,9 @@ import {
   tryAsync,
   trySync,
 } from "@evolu/common";
-import type { StateMaterializationError } from "./errors";
-import { createSyncStateQuery } from "./evolu-queries";
-import type { FilePath, Schema } from "./evolu-schema";
+import type { StateMaterializationError } from "./errors.ts";
+import { createSyncStateQuery } from "./evolu-queries.ts";
+import type { FilePath, Schema } from "./evolu-schema.ts";
 
 type EvoluDatabase = Evolu<typeof Schema>;
 

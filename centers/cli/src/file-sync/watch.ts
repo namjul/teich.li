@@ -4,9 +4,9 @@ import { mkdir } from "node:fs/promises";
 import { isAbsolute, join, relative } from "node:path";
 import { tryAsync } from "@evolu/common";
 import { watch } from "chokidar";
-import { logger } from "../logger";
-import type { WatchQueueTaskError, WatchShutdownError } from "./errors";
-import { isIgnoredRelativePath } from "./ignore";
+import { logger } from "../logger.ts";
+import type { WatchQueueTaskError, WatchShutdownError } from "./errors.ts";
+import { isIgnoredRelativePath } from "./ignore.ts";
 
 const DEBOUNCE_MS = 100;
 const MAX_CONCURRENT = 10; // Limit concurrent file operations

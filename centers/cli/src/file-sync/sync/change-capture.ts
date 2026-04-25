@@ -4,13 +4,13 @@
 import { stat } from "node:fs/promises";
 import { relative } from "node:path";
 import { err, ok, type Result } from "@evolu/common";
-import { logger } from "../../logger";
-import { MAX_FILE_SIZE_BYTES } from "../constants";
-import type { ChangeCaptureError } from "../errors";
-import { planChangeCapture } from "./change-capture-plan";
-import type { FileSyncContext } from "./context";
-import { executePlan } from "./executor";
-import { collectChangeCaptureState } from "./state-collector";
+import { logger } from "../../logger.ts";
+import { MAX_FILE_SIZE_BYTES } from "../constants.ts";
+import type { ChangeCaptureError } from "../errors.ts";
+import { planChangeCapture } from "./change-capture-plan.ts";
+import type { FileSyncContext } from "./context.ts";
+import { executePlan } from "./executor.ts";
+import { collectChangeCaptureState } from "./state-collector.ts";
 
 /**
  * Format bytes to human-readable size using binary units (1024-based).

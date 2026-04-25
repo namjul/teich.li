@@ -3,19 +3,22 @@
   "version": "0.0.1",
   "description": "CLI for txtatelier local-first file sync",
   "type": "module",
+  "main": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "bin": {
-    "txtatelier": "./dist/index.js"
+    "txtatelier": "src/cli.ts"
   },
   "files": [
-    "dist",
+    "src",
+    "!src/**/*.test.ts",
     "package.json"
   ],
   "scripts": {
-    "build": "bun build src/index.ts --outdir dist --target node --format esm --external clipanion --external typanion --external picocolors --external clipboardy",
-    "prepublishOnly": "bun run build",
-    "dev": "bun --watch src/index.ts",
-    "dev:inspect": "bun --inspect --watch src/index.ts",
-    "start": "bun src/index.ts",
+    "dev": "bun --watch src/cli.ts",
+    "dev:inspect": "bun --inspect --watch src/cli.ts",
+    "start": "bun src/cli.ts",
     "test": "vitest run"
   },
   "dependencies": {
@@ -39,7 +42,7 @@
     "vitest": "^4.1.0"
   },
   "engines": {
-    "node": ">=22.5.0"
+    "node": ">=22.6.0"
   },
   "keywords": [
     "file-sync",

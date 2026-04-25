@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
-import { planStateMaterialization } from "./state-materialization-plan";
-import type { MaterializationState } from "./state-types";
+import { planStateMaterialization } from "./state-materialization-plan.ts";
+import type { MaterializationState } from "./state-types.ts";
 
 describe("planStateMaterialization - pure planning logic", () => {
   describe("already processed", () => {

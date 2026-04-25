@@ -1,6 +1,6 @@
 import type { Evolu } from "@evolu/common";
 import type { OwnerId } from "@evolu/common/local-first";
-import type { Schema } from "../evolu-schema";
+import type { Schema } from "../evolu-schema.ts";
 
 export type EvoluDatabase = Evolu<typeof Schema>;
 

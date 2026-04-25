@@ -1,7 +1,7 @@
 import * as readline from "node:readline";
 import { createConsole, createConsoleWithTime } from "@evolu/common";
 import pc from "picocolors";
-import { env, type LogLevel } from "./env";
+import { env, type LogLevel } from "./env.ts";
 
 const LogLevelPriority: Record<LogLevel, number> = {
   DEBUG: 0,

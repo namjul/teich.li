@@ -1,8 +1,8 @@
 import type { Interface as ReadlineInterface } from "node:readline";
 import { describe, expect, test, vi } from "vitest";
-import type { FileSyncSession } from "./file-sync/index.js";
-import type { Logger } from "./logger.js";
-import { bindShortcuts, computeStdinInteractive } from "./shortcuts.js";
+import type { FileSyncSession } from "./file-sync/index.ts";
+import type { Logger } from "./logger.ts";
+import { bindShortcuts, computeStdinInteractive } from "./shortcuts.ts";
 
 const flushMicrotasks = async (): Promise<void> => {
   await new Promise<void>((resolve) => {

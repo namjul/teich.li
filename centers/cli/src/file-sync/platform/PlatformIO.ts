@@ -5,7 +5,7 @@ import { randomUUID } from "node:crypto";
 import { access, mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 import { err, ok, type Result, tryAsync } from "@evolu/common";
-import type { ReadDbError, WriteDbError } from "../errors";
+import type { ReadDbError, WriteDbError } from "../errors.ts";
 
 export type PlatformIO = {
   readonly readFile: () => Promise<Result<Uint8Array | null, ReadDbError>>;

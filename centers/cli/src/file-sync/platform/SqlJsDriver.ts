@@ -9,9 +9,9 @@ import {
   tryAsync,
 } from "@evolu/common";
 import type { Database } from "sql.js";
-import { logger } from "../../logger";
-import type { DbDeserializeError } from "../errors";
-import type { PlatformIO } from "./PlatformIO";
+import { logger } from "../../logger.ts";
+import type { DbDeserializeError } from "../errors.ts";
+import type { PlatformIO } from "./PlatformIO.ts";
 
 const SAVE_DEBOUNCE_MS = 5_000;
 const LOG_PREFIX = "[db:sqlite:sqljs]";

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { generateConflictPath, planConflictAction } from "./conflicts";
+import { generateConflictPath, planConflictAction } from "./conflicts.ts";
 
 describe("generateConflictPath - pure path generation", () => {
   test("generates conflict path with owner ID and timestamp", () => {

@@ -14,14 +14,14 @@ import {
 } from "@evolu/common";
 import { deriveShardOwner, type ShardOwner } from "@evolu/common/local-first";
 import { FILES_SHARD } from "@txtatelier/sync-invariants";
-import { logger } from "../logger";
-import type { FlushError } from "./errors";
-import { Schema } from "./evolu-schema";
+import { logger } from "../logger.ts";
+import type { FlushError } from "./errors.ts";
+import { Schema } from "./evolu-schema.ts";
 
 type EvoluDatabase = Evolu<typeof Schema>;
 
-import { createEvoluDeps } from "./platform/EvoluDeps";
-import { createPlatformIO } from "./platform/PlatformIO";
+import { createEvoluDeps } from "./platform/EvoluDeps.ts";
+import { createPlatformIO } from "./platform/PlatformIO.ts";
 
 // Module-level cache to prevent WebSocket leaks on reload
 // (Evolu doesn't properly dispose WebSocket connections in 7.4.1)

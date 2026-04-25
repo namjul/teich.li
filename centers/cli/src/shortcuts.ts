@@ -1,7 +1,7 @@
 import type { Interface as ReadlineInterface } from "node:readline";
 import clipboard from "clipboardy";
-import type { FileSyncSession } from "./file-sync/index.js";
-import type { Logger } from "./logger.js";
+import type { FileSyncSession } from "./file-sync/index.ts";
+import type { Logger } from "./logger.ts";
 
 export interface SessionDep {
   readonly session: FileSyncSession;

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
-import { planChangeCapture } from "./change-capture-plan";
-import type { ChangeCaptureState } from "./state-types";
+import { planChangeCapture } from "./change-capture-plan.ts";
+import type { ChangeCaptureState } from "./state-types.ts";
 
 describe("planChangeCapture - pure planning logic", () => {
   describe("file unchanged", () => {

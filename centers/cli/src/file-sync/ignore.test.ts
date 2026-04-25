@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { isIgnoredRelativePath } from "./ignore";
+import { isIgnoredRelativePath } from "./ignore.ts";
 
 test("ignores temp files with .tmp- in path", () => {
   expect(isIgnoredRelativePath("file.tmp-1234567890")).toBe(true);
