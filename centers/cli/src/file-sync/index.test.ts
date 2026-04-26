@@ -21,7 +21,11 @@ import { FILES_SHARD } from "@txtatelier/sync-invariants";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import { resetEvolu } from "./evolu.ts";
 import { computeContentHash } from "./hash.ts";
-import { defaultRelayUrl, type FileSyncSession, startFileSync } from "./index.ts";
+import {
+  defaultRelayUrl,
+  type FileSyncSession,
+  startFileSync,
+} from "./index.ts";
 
 let tempDir: string;
 
@@ -47,7 +51,7 @@ describe("GIVEN clean workspace", () => {
       expect(typeof session.showStatus).toBe("function");
       expect(typeof session.restoreMnemonic).toBe("function");
       expect(typeof session.resetOwner).toBe("function");
-      expect(typeof session.clearConsole).toBe("function");
+      expect(typeof session.clearScreen).toBe("function");
       expect(typeof session.quit).toBe("function");
       expect(session.evolu).toBeDefined();
       expect(typeof session.flush).toBe("function");
@@ -76,7 +80,6 @@ describe("GIVEN clean workspace", () => {
       await session2.stop();
     });
   });
-
 });
 
 describe("GIVEN files exist on disk before sync starts", () => {

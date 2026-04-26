@@ -1,18 +1,21 @@
 import type { Interface as ReadlineInterface } from "node:readline";
-import clipboard from "clipboardy";
-import type { FileSyncSession } from "./file-sync/index.ts";
 import type { Logger } from "./logger.ts";
 
-export interface SessionDep {
-  readonly session: FileSyncSession;
+export interface ShortcutCommands {
+  readonly showStatus: () => Promise<string>;
+  readonly showMnemonic: () => Promise<string>;
+  readonly restoreMnemonic: (mnemonic: string) => Promise<string>;
+  readonly resetOwner: () => Promise<string>;
+  readonly clearScreen: () => void;
+  readonly quit: () => void;
+}
+
+export interface TTYDep {
+  readonly isInteractive: boolean;
 }
 
 export interface LoggerDep {
   readonly logger: Logger;
-}
-
-export interface TTYDep {
-  readonly isTTY: boolean;
 }
 
 export interface ShortcutOptionsDep {
@@ -48,9 +51,13 @@ const normalizeMnemonicInput = (s: string): string =>
  * @returns Cleanup function (close readline when tearing down the CLI).
  */
 export const bindShortcuts = (
-  deps: SessionDep & LoggerDep & TTYDep & ShortcutOptionsDep & ReadlineDep,
+  deps: ShortcutCommands &
+    LoggerDep &
+    TTYDep &
+    ShortcutOptionsDep &
+    ReadlineDep,
 ): (() => void) => {
-  if (!deps.isTTY || deps.readline == null) {
+  if (!deps.isInteractive || deps.readline == null) {
     if (deps.options.print) {
       deps.logger.info("Running non-interactive (shortcuts disabled)");
     }
@@ -91,22 +98,11 @@ export const bindShortcuts = (
       });
     });
 
-  const readMnemonicLine = async (
-    _promptFromSession: string,
-  ): Promise<string> => {
+  const readMnemonicLine = async (): Promise<string> => {
     const typed = await question(
-      "Mnemonic, then Enter (empty line = system clipboard; use Ctrl+Shift+V to paste): ",
+      "Mnemonic, then Enter (use Ctrl+Shift+V to paste): ",
     );
-    const trimmed = typed.trim();
-    if (trimmed.length > 0) {
-      return trimmed;
-    }
-    try {
-      const t = normalizeMnemonicInput(clipboard.readSync());
-      return t.length > 0 ? t : "";
-    } catch {
-      return "";
-    }
+    return normalizeMnemonicInput(typed);
   };
 
   const showHelp = (): void => {
@@ -121,14 +117,15 @@ export const bindShortcuts = (
 
   const runShortcut = async (
     key: string,
-    fn: () => void | Promise<void>,
+    fn: () => void | Promise<void | string>,
   ): Promise<void> => {
     if (actionRunning) {
       return;
     }
     actionRunning = true;
     try {
-      await fn();
+      const result = await fn();
+      if (typeof result === "string") deps.logger.info(result);
     } catch (error) {
       handleShortcutError(error, key, deps.logger);
     } finally {
@@ -146,26 +143,26 @@ export const bindShortcuts = (
 
     switch (trimmed) {
       case "u":
-        await runShortcut("u", () => deps.session.showStatus());
+        await runShortcut("u", () => deps.showStatus());
         return;
       case "s":
-        await runShortcut("s", () => deps.session.showMnemonic());
+        await runShortcut("s", () => deps.showMnemonic());
         return;
       case "p":
-        await runShortcut("p", () =>
-          deps.session.restoreMnemonic(readMnemonicLine),
+        await runShortcut("p", async () =>
+          deps.restoreMnemonic(await readMnemonicLine()),
         );
         return;
       case "d":
-        await runShortcut("d", () => deps.session.resetOwner());
+        await runShortcut("d", () => deps.resetOwner());
         return;
       case "c":
         await runShortcut("c", () => {
-          deps.session.clearConsole();
+          deps.clearScreen();
         });
         return;
       case "q":
-        await runShortcut("q", () => deps.session.quit());
+        await runShortcut("q", () => deps.quit());
         return;
       default:
         return;

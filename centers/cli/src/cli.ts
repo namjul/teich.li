@@ -16,15 +16,7 @@ import {
   formatDuplicateInstanceMessage,
 } from "./file-sync/platform/index.ts";
 import { createInteractiveLogger } from "./logger.ts";
-import {
-  bindShortcuts,
-  computeStdinInteractive,
-  type LoggerDep,
-  type ReadlineDep,
-  type SessionDep,
-  type ShortcutOptionsDep,
-  type TTYDep,
-} from "./shortcuts.ts";
+import { bindShortcuts, computeStdinInteractive } from "./shortcuts.ts";
 
 /** Returns an exit code when startup must stop; otherwise never resolves. */
 const runStart = async (watchDir?: string): Promise<number | undefined> => {
@@ -44,12 +36,12 @@ const runStart = async (watchDir?: string): Promise<number | undefined> => {
 
   const isInteractive = computeStdinInteractive();
 
-  let clearConsoleRef: (() => void) | undefined;
+  let clearScreenRef: (() => void) | undefined;
 
   const result = await startFileSync({
     watchDir: resolvedWatchDir,
-    clearConsole: () => {
-      clearConsoleRef?.();
+    clearScreen: () => {
+      clearScreenRef?.();
     },
     beforeQuit: async () => {
       await instanceLock.release();
@@ -75,7 +67,7 @@ const runStart = async (watchDir?: string): Promise<number | undefined> => {
     : null;
 
   const ilog = createInteractiveLogger(rl);
-  clearConsoleRef = () => {
+  clearScreenRef = () => {
     ilog.clearScreen();
   };
 
@@ -99,19 +91,18 @@ const runStart = async (watchDir?: string): Promise<number | undefined> => {
     ilog.info(`Watching: ${resolvedWatchDir}`);
   }
 
-  const shortcutDeps: SessionDep &
-    LoggerDep &
-    TTYDep &
-    ShortcutOptionsDep &
-    ReadlineDep = {
-    session,
+  const unbindShortcuts = bindShortcuts({
+    showStatus: session.showStatus,
+    showMnemonic: session.showMnemonic,
+    restoreMnemonic: session.restoreMnemonic,
+    resetOwner: session.resetOwner,
+    clearScreen: session.clearScreen,
+    quit: session.quit,
     logger: ilog,
-    isTTY: isInteractive,
+    isInteractive,
     options: { print: true },
     readline: rl,
-  };
-
-  const unbindShortcuts = bindShortcuts(shortcutDeps);
+  });
   session.onStop(() => {
     unbindShortcuts();
   });
@@ -154,7 +145,10 @@ const ownerCommand = defineCommand({
       type: "boolean" as const,
       description: "Show path of owner/mnemonic files",
     },
-    reset: { type: "boolean" as const, description: "Reset owner (destructive)" },
+    reset: {
+      type: "boolean" as const,
+      description: "Reset owner (destructive)",
+    },
     yes: {
       type: "boolean" as const,
       description: "Confirm destructive operation (for --reset)",

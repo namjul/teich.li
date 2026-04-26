@@ -27,7 +27,6 @@
     "@types/proper-lockfile": "^4.1.4",
     "chokidar": "^5.0.0",
     "citty": "^0.2.2",
-    "clipboardy": "^5.3.1",
     "env-paths": "^4.0.0",
     "picocolors": "^1.1.1",
     "picomatch": "^4.0.3",

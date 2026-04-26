@@ -41,12 +41,6 @@ const formatTypeError = createFormatTypeError();
 const hashWatchDir = (dir: string) =>
   createHash("sha256").update(resolve(dir)).digest("hex").slice(0, 8);
 
-/** Interactive shortcut output; visible even when TXTATELIER_LOG_LEVEL is ERROR (default). */
-const cliShortcutInfo = (...args: unknown[]): void => {
-  // eslint-disable-next-line no-console
-  console.info(...args);
-};
-
 export const defaultDbPath = (watchDir: string) =>
   join(paths.data, `txtatelier-${hashWatchDir(watchDir)}.db`);
 export const defaultRelayUrl = "wss://free.evoluhq.com";
@@ -84,11 +78,11 @@ export interface OwnerSession {
 export type ReadLineFn = (question: string) => Promise<string>;
 
 export interface FileSyncSession extends OwnerSession {
-  readonly showMnemonic: () => Promise<void>;
-  readonly showStatus: () => Promise<void>;
-  readonly restoreMnemonic: (readLine: ReadLineFn) => Promise<void>;
-  readonly resetOwner: () => Promise<void>;
-  readonly clearConsole: () => void;
+  readonly showMnemonic: () => Promise<string>;
+  readonly showStatus: () => Promise<string>;
+  readonly restoreMnemonic: (mnemonicInput: string) => Promise<string>;
+  readonly resetOwner: () => Promise<string>;
+  readonly clearScreen: () => void;
   readonly quit: () => Promise<void>;
   readonly onStop: (handler: () => void | Promise<void>) => () => void;
   readonly stop: () => Promise<void>;
@@ -163,7 +157,7 @@ const resetOwnerData = async (session: OwnerSession): Promise<void> => {
 
 export type FileSyncStartOptions = Partial<FileSyncConfig> & {
   readonly beforeQuit?: () => Promise<void>;
-  readonly clearConsole?: () => void;
+  readonly clearScreen?: () => void;
 };
 
 export const startFileSync = async (
@@ -325,7 +319,7 @@ export const startFileSync = async (
     detachSyncLoop(loopHandles);
   };
 
-  const clearConsole = config?.clearConsole ?? ((): void => {});
+  const clearScreen = config?.clearScreen ?? ((): void => {});
 
   const stop = async (): Promise<void> => {
     if (stopped) {
@@ -374,39 +368,39 @@ export const startFileSync = async (
       watchDir,
       relayUrl,
     },
-    showMnemonic: async (): Promise<void> => {
+    showMnemonic: async () => {
       const o = await evolu.appOwner;
-      cliShortcutInfo("");
-      cliShortcutInfo("  Mnemonic (copy manually):");
-      cliShortcutInfo(`  ${o.mnemonic}`);
-      cliShortcutInfo("");
+      return ["", "  Mnemonic (copy manually):", `  ${o.mnemonic}`, ""].join(
+        "\n",
+      );
     },
-    showStatus: async (): Promise<void> => {
+    showStatus: async () => {
       const o = await evolu.appOwner;
-      cliShortcutInfo("Status:");
-      cliShortcutInfo(`  DB path: ${dbPath}`);
-      cliShortcutInfo(`  Watch dir: ${watchDir}`);
-      cliShortcutInfo(`  Relay URL: ${relayUrl}`);
-      cliShortcutInfo(`  Owner ID: ${o.id}`);
+      return [
+        "Status:",
+        `  DB path: ${dbPath}`,
+        `  Watch dir: ${watchDir}`,
+        `  Relay URL: ${relayUrl}`,
+        `  Owner ID: ${o.id}`,
+      ].join("\n");
     },
-    restoreMnemonic: async (readLine: ReadLineFn): Promise<void> => {
-      const line = (await readLine("Paste mnemonic words: ")).trim();
-      await restoreOwnerFromMnemonic(ownerSession, line);
-      cliShortcutInfo("");
-      cliShortcutInfo(
+    restoreMnemonic: async (mnemonicInput: string) => {
+      await restoreOwnerFromMnemonic(ownerSession, mnemonicInput);
+      return [
+        "",
         "  Owner restored. Stop this process (q) and start again to use the restored identity.",
-      );
-      cliShortcutInfo("");
+        "",
+      ].join("\n");
     },
-    resetOwner: async (): Promise<void> => {
+    resetOwner: async () => {
       await resetOwnerData(ownerSession);
-      cliShortcutInfo("");
-      cliShortcutInfo(
+      return [
+        "",
         "  Owner reset. Stop this process (q) and start again to use the new owner.",
-      );
-      cliShortcutInfo("");
+        "",
+      ].join("\n");
     },
-    clearConsole,
+    clearScreen,
     quit,
     onStop: (handler: () => void | Promise<void>): (() => void) => {
       stopHandlers.push(handler);
