@@ -5,7 +5,7 @@ import { ok, type Result, tryAsync } from "@evolu/common";
 import envPaths from "env-paths";
 import lockfile from "proper-lockfile";
 
-const txtatelierPaths = envPaths("txtatelier");
+const teichPaths = envPaths("teich");
 
 /** Stable path under local cache — avoids cloud-sync dirs (e.g. Dropbox) breaking lock mkdir/rmdir. */
 const lockfilePathForWatchDir = (watchDir: string): string => {
@@ -13,7 +13,7 @@ const lockfilePathForWatchDir = (watchDir: string): string => {
     .update(resolve(watchDir))
     .digest("hex")
     .slice(0, 8);
-  return join(txtatelierPaths.cache, "instance-locks", `${h}.lock`);
+  return join(teichPaths.cache, "instance-locks", `${h}.lock`);
 };
 
 export type InstanceLockError =
@@ -39,20 +39,20 @@ export const formatDuplicateInstanceMessage = (
   if (error.type === "AlreadyLocked") {
     const pidLine =
       error.pid != null
-        ? `If that process is txtatelier, stop it with: kill ${error.pid}`
-        : "Stop the other txtatelier process, or wait for a stale lock to expire (~10s after a crash).";
+        ? `If that process is teich, stop it with: kill ${error.pid}`
+        : "Stop the other teich process, or wait for a stale lock to expire (~10s after a crash).";
     return [
-      "[txtatelier] Another instance appears to be using this watch directory:",
+      "[teich] Another instance appears to be using this watch directory:",
       `  ${watchDir}`,
       pidLine,
-      "Or use a different directory, e.g. txtatelier --watch-dir <path>",
+      "Or use a different directory, e.g. teich --watch-dir <path>",
     ].join("\n");
   }
-  return `[txtatelier] Could not acquire instance lock: ${error.cause.message}`;
+  return `[teich] Could not acquire instance lock: ${error.cause.message}`;
 };
 
 /**
- * Exclusive lock for a single txtatelier process per resolved watch directory.
+ * Exclusive lock for a single teich process per resolved watch directory.
  * Lock file lives under OS app cache (not next to the watch dir) so cloud-synced
  * folders do not break atomic mkdir/rmdir.
  */
@@ -73,7 +73,7 @@ export const createInstanceLock = (watchDir: string): InstanceLock => {
             lockfilePath,
             onCompromised: (compromiseError: Error) => {
               console.error(
-                "[txtatelier] Instance lock compromised:",
+                "[teich] Instance lock compromised:",
                 compromiseError.message,
               );
             },

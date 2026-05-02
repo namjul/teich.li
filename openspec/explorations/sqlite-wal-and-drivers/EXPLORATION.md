@@ -12,7 +12,7 @@ We hit a real failure mode on **Node + better-sqlite3**: `await evolu.appOwner` 
 
 Separately, a **reference driver** (Obsidian-style, **sql.js**) loads `new SQL.Database(existingData)` and never enables WAL in the snippet — a different persistence and engine model.
 
-This note explores **what WAL is for**, **why txtatelier enables it**, **how that differs from the reference**, and **what optional simplifications** might exist without claiming one is universally “right.”
+This note explores **what WAL is for**, **why teich enables it**, **how that differs from the reference**, and **what optional simplifications** might exist without claiming one is universally “right.”
 
 ---
 
@@ -46,7 +46,7 @@ It is a **native SQLite file** concern: sidecar files want a **real path** on di
 
 ---
 
-## Why txtatelier uses WAL (today)
+## Why teich uses WAL (today)
 
 In [`centers/cli/src/file-sync/platform/SqliteDriverFactory.ts`](../../../centers/cli/src/file-sync/platform/SqliteDriverFactory.ts), after opening the DB:
 
@@ -73,7 +73,7 @@ So the reference is not proving “WAL is bad”; it is on a **different engine 
 
 ## Assumption matrix
 
-| Assumption | txtatelier native factory | Reference sql.js |
+| Assumption | teich native factory | Reference sql.js |
 |------------|---------------------------|------------------|
 | SQLite implementation | Native (bun / better-sqlite3) | sql.js (wasm/asm) |
 | Primary durability | Serialize/export + PlatformIO to **one** path | `db.export()` + `io.writeFile` |
@@ -100,7 +100,7 @@ So the reference is not proving “WAL is bad”; it is on a **different engine 
    Surfaces worker `onError` **before** `startFileSync` attaches its own subscriber — relevant when init dies on `appOwner`. Not redundant with the later subscription.
 
 5. **What are the actual database size expectations?**
-   sql.js loads the entire DB into memory. If txtatelier is for personal note-taking (hundreds of files, MB range), this is fine. If it's for large media or enterprise datasets (GB range), it's a non-starter. Unknown: typical usage patterns.
+   sql.js loads the entire DB into memory. If teich is for personal note-taking (hundreds of files, MB range), this is fine. If it's for large media or enterprise datasets (GB range), it's a non-starter. Unknown: typical usage patterns.
 
 ---
 
@@ -174,7 +174,7 @@ PROPOSED STATE (sql.js):
 | **Binary size** | Native deps (large but system) | WASM file (~1-2MB) |
 | **Cross-platform** | Different per runtime | Identical everywhere |
 
-### Why sql.js Might Fit txtatelier
+### Why sql.js Might Fit teich
 
 **Current persistence flow:**
 ```
@@ -218,7 +218,7 @@ PROPOSED STATE (sql.js):
 
 ### The Real Questions
 
-**Does txtatelier need WAL's benefits?**
+**Does teich need WAL's benefits?**
 
 WAL exists for:
 - Concurrent readers/writers without locks
@@ -230,7 +230,7 @@ Evolu provides:
 - CRDT-based recovery (sync from other devices)
 - Batched writes via debounced serialization
 
-**The mismatch:** WAL optimizes for a pattern (continuous disk persistence) that txtatelier doesn't actually use.
+**The mismatch:** WAL optimizes for a pattern (continuous disk persistence) that teich doesn't actually use.
 
 ### Risk Assessment
 
@@ -263,7 +263,7 @@ This determines whether "unification" means:
 
 **WAL optimizes native on-disk SQLite; it demands a file identity. Buffer-open + WAL was the bad combo. The reference avoids that world by using in-memory sql.js + export, not by disproving WAL.**
 
-**Extension:** txtatelier's debounced snapshot persistence aligns better with sql.js's model than with WAL's continuous streaming model. The question isn't whether WAL is good — it's whether our architecture actually benefits from it.
+**Extension:** teich's debounced snapshot persistence aligns better with sql.js's model than with WAL's continuous streaming model. The question isn't whether WAL is good — it's whether our architecture actually benefits from it.
 
 ---
 

@@ -1,7 +1,7 @@
 # Exploration: atomically Package for Atomic File Writes
 
 **Exploration Date:** 2026-03-29  
-**Context:** Evaluating whether to adopt the `atomically` npm package to replace or enhance current atomic file write implementations in txtatelier.
+**Context:** Evaluating whether to adopt the `atomically` npm package to replace or enhance current atomic file write implementations in teich.
 
 ---
 

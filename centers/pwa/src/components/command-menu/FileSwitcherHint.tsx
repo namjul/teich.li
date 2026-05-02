@@ -1,6 +1,6 @@
 import { createEffect, createSignal, onCleanup, Show } from "solid-js";
 
-const STORAGE_KEY = "txtatelier.file-switcher-hint-dismissed";
+const STORAGE_KEY = "teich.file-switcher-hint-dismissed";
 
 export const FileSwitcherHint = () => {
   const [dismissed, setDismissed] = createSignal(

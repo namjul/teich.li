@@ -5,7 +5,7 @@ TBD - created by archiving change prevent-duplicate-instance-start. Update Purpo
 ## Requirements
 ### Requirement: CLI startup order before sync
 
-For the default `txtatelier` command, the system SHALL resolve the watch directory, acquire the instance lock, then run file-sync initialization (Evolu client, reconciliation, sync loops). Fatal failures before sync begins SHALL not leave the lock held when startup fails after lock acquisition.
+For the default `teich` command, the system SHALL resolve the watch directory, acquire the instance lock, then run file-sync initialization (Evolu client, reconciliation, sync loops). Fatal failures before sync begins SHALL not leave the lock held when startup fails after lock acquisition.
 
 #### Scenario: Happy path order
 

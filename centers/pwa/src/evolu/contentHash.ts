@@ -1,1 +1,1 @@
-export { computeContentHash, computeHash } from "@txtatelier/sync-invariants";
+export { computeContentHash, computeHash } from "@teich/sync-invariants";

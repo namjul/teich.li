@@ -1,4 +1,4 @@
-# Exploration: Dependency Injection Opportunities in txtatelier
+# Exploration: Dependency Injection Opportunities in teich
 
 **Date:** 2026-03-21  
 **Source:** https://www.evolu.dev/docs/dependency-injection  
@@ -63,7 +63,7 @@ Key principle: **Never use global service locators** (e.g., `export const db = c
 
 ---
 
-## Specific Opportunities in txtatelier
+## Specific Opportunities in teich
 
 ### 1. Time/Clock Dependency (High Impact)
 

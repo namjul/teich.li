@@ -15,7 +15,7 @@ import {
   type Result,
 } from "@evolu/common";
 import { deriveShardOwner } from "@evolu/common/local-first";
-import { FILES_SHARD } from "@txtatelier/sync-invariants";
+import { FILES_SHARD } from "@teich/sync-invariants";
 import envPaths from "env-paths";
 import untildify from "untildify";
 import { env } from "../env.ts";
@@ -34,7 +34,7 @@ import {
 } from "./sync/index.ts";
 import { startWatching } from "./watch.ts";
 
-const paths = envPaths("txtatelier");
+const paths = envPaths("teich");
 
 const formatTypeError = createFormatTypeError();
 
@@ -42,9 +42,9 @@ const hashWatchDir = (dir: string) =>
   createHash("sha256").update(resolve(dir)).digest("hex").slice(0, 8);
 
 export const defaultDbPath = (watchDir: string) =>
-  join(paths.data, `txtatelier-${hashWatchDir(watchDir)}.db`);
+  join(paths.data, `teich-${hashWatchDir(watchDir)}.db`);
 export const defaultRelayUrl = "wss://free.evoluhq.com";
-export const defaultWatchDir = join(homedir(), "Documents", "Txtatelier");
+export const defaultWatchDir = join(homedir(), "Documents", "Teich");
 
 /**
  * Resolve the watch directory for CLI and file-sync startup (same rules as {@link createOwnerSession}).

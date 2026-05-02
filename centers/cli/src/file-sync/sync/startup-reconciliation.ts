@@ -99,7 +99,8 @@ const evoluMatchesLastApplied = (
 const diskMatchesLastApplied = (
   diskHash: string | null,
   lastAppliedHash: string | null,
-): boolean => diskHash != null && lastAppliedHash != null && diskHash === lastAppliedHash;
+): boolean =>
+  diskHash != null && lastAppliedHash != null && diskHash === lastAppliedHash;
 
 /**
  * Nothing on disk, or disk still at the last-applied snapshot (safe to write Evolu over).

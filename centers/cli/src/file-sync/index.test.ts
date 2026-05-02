@@ -17,7 +17,7 @@ import {
   sqliteTrue,
 } from "@evolu/common";
 import { deriveShardOwner } from "@evolu/common/local-first";
-import { FILES_SHARD } from "@txtatelier/sync-invariants";
+import { FILES_SHARD } from "@teich/sync-invariants";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import { resetEvolu } from "./evolu.ts";
 import { computeContentHash } from "./hash.ts";
@@ -30,7 +30,7 @@ import {
 let tempDir: string;
 
 beforeEach(async () => {
-  tempDir = await mkdtemp(join(tmpdir(), "txtatelier-test-"));
+  tempDir = await mkdtemp(join(tmpdir(), "teich-test-"));
   const dbPath = join(tempDir, "test.db");
   await resetEvolu(dbPath, defaultRelayUrl);
 });

@@ -13,7 +13,7 @@ import {
   tryAsync,
 } from "@evolu/common";
 import { deriveShardOwner, type ShardOwner } from "@evolu/common/local-first";
-import { FILES_SHARD } from "@txtatelier/sync-invariants";
+import { FILES_SHARD } from "@teich/sync-invariants";
 import { logger } from "../logger.ts";
 import type { FlushError } from "./errors.ts";
 import { Schema } from "./evolu-schema.ts";
@@ -58,7 +58,7 @@ export const createEvoluClient = async ({
   const readPreflightResult = await io.readFile();
   if (!readPreflightResult.ok) {
     logger.error(
-      "[txtatelier] Database preflight read failed:",
+      "[teich] Database preflight read failed:",
       readPreflightResult.error,
     );
     throw new Error("Database preflight read failed", {
@@ -69,14 +69,14 @@ export const createEvoluClient = async ({
   const deps = createEvoluDeps(io);
 
   const evolu = createEvolu(deps)(Schema, {
-    name: SimpleName.orThrow("txtatelier"),
+    name: SimpleName.orThrow("teich"),
     transports: [{ type: "WebSocket", url: relayUrl }],
   });
 
   evolu.subscribeError(() => {
     const error = evolu.getError();
     if (error != null) {
-      logger.error("[txtatelier] Evolu error:", error);
+      logger.error("[teich] Evolu error:", error);
     }
   });
 
@@ -126,7 +126,7 @@ export const resetEvolu = async (dbPath: string, relayUrl: string) => {
   if (_cached) {
     const flushResult = await _cached.flush();
     if (!flushResult.ok) {
-      logger.error("[txtatelier] Failed to flush database:", flushResult.error);
+      logger.error("[teich] Failed to flush database:", flushResult.error);
     }
   }
   _cached = null;

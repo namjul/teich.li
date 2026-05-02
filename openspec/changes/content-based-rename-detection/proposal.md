@@ -1,6 +1,6 @@
 ## Why
 
-File renames across devices currently create unnecessary conflicts, waste bandwidth (full content re-upload), and lose file identity/history. Research shows that while Obsidian, Logseq, and Dendron all use delete + create, they control renames through their apps. Since txtatelier is filesystem-canonical and supports external renames (git, file managers), implementing content-based rename detection provides a competitive advantage: efficient multi-device rename sync without requiring app-controlled operations.
+File renames across devices currently create unnecessary conflicts, waste bandwidth (full content re-upload), and lose file identity/history. Research shows that while Obsidian, Logseq, and Dendron all use delete + create, they control renames through their apps. Since teich is filesystem-canonical and supports external renames (git, file managers), implementing content-based rename detection provides a competitive advantage: efficient multi-device rename sync without requiring app-controlled operations.
 
 ## What Changes
 

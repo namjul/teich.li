@@ -1,7 +1,7 @@
 # Exploration: CLI Webserver as Publishing Interface
 
 **Status:** Exploration complete  
-**Context:** txtatelier CLI runs a webserver to serve files as a permanent second interface for public consumption
+**Context:** teich CLI runs a webserver to serve files as a permanent second interface for public consumption
 
 ---
 
@@ -70,7 +70,7 @@ journal/2024-01.txt ──►     /journal/2024-01
 
 ### 2. Scope: Foundation Now, Advancements Later
 
-**Current txtatelier state:**
+**Current teich state:**
 - No public/private concept
 - No wiki-links
 - Filesystem = flat organization

@@ -10,7 +10,7 @@ File renames are treated as delete + create operations:
 **Research findings:**
 - Obsidian, Logseq, Dendron all use delete + create at sync layer
 - They control renames through app UI and update links before syncing
-- txtatelier is filesystem-canonical: renames happen externally (git, file managers)
+- teich is filesystem-canonical: renames happen externally (git, file managers)
 - No competitors implement content-based rename detection across devices
 
 **Architecture constraints:**

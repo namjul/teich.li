@@ -2,6 +2,7 @@
 import * as readline from "node:readline";
 import { defineCommand, runMain } from "citty";
 import packageJson from "../package.json" with { type: "json" };
+import { createAllFilesQuery } from "./file-sync/evolu-queries.ts";
 import {
   createOwnerSession,
   resetOwner,
@@ -10,7 +11,6 @@ import {
   showOwnerMnemonic,
   startFileSync,
 } from "./file-sync/index.ts";
-import { createAllFilesQuery } from "./file-sync/evolu-queries.ts";
 import {
   createInstanceLock,
   formatDuplicateInstanceMessage,
@@ -50,7 +50,7 @@ const runStart = async (watchDir?: string): Promise<number | undefined> => {
 
   if (!result.ok) {
     await instanceLock.release();
-    console.error("[txtatelier] Fatal error during startup:");
+    console.error("[teich] Fatal error during startup:");
     console.error(result.error);
     return 1;
   }
@@ -108,7 +108,7 @@ const runStart = async (watchDir?: string): Promise<number | undefined> => {
   });
 
   const shutdown = async (signal: string) => {
-    ilog.info(`[txtatelier] Received ${signal}, shutting down gracefully...`);
+    ilog.info(`[teich] Received ${signal}, shutting down gracefully...`);
     await session.stop();
     await instanceLock.release();
     process.exit(0);
@@ -173,7 +173,7 @@ const ownerCommand = defineCommand({
     if (args.reset) {
       if (!args.yes) {
         console.error(
-          "Reset is destructive. Re-run with: txtatelier owner --reset --yes",
+          "Reset is destructive. Re-run with: teich owner --reset --yes",
         );
         process.exit(1);
       }

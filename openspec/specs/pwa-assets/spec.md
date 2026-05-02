@@ -15,5 +15,5 @@ The PWA workspace SHALL keep a vector source image at `centers/pwa/public/pwa-so
 #### Scenario: Brand colors align with manifest
 
 - **WHEN** the web app manifest is generated
-- **THEN** `theme_color` and `background_color` match the intended TXTAtelier shell color (`#0f172a`) and the HTML entry receives an injected `theme-color` meta tag consistent with that value
+- **THEN** `theme_color` and `background_color` match the intended teich.li shell color (`#0f172a`) and the HTML entry receives an injected `theme-color` meta tag consistent with that value
 

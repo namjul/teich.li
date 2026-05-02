@@ -1,6 +1,6 @@
 ## Why
 
-When users rename files on one device while editing them on another, txtatelier creates conflict files with "remote-delete" in the filename. This is technically correct (the rename creates a delete + create operation), but confusing for users who don't understand why their rename triggered a "deletion" conflict. Research shows that Obsidian, Logseq, and Dendron all use the same delete + create approach, but hide it through in-app rename commands. Since txtatelier is filesystem-canonical and supports external renames, explicit and helpful conflict messages are essential for user clarity.
+When users rename files on one device while editing them on another, teich creates conflict files with "remote-delete" in the filename. This is technically correct (the rename creates a delete + create operation), but confusing for users who don't understand why their rename triggered a "deletion" conflict. Research shows that Obsidian, Logseq, and Dendron all use the same delete + create approach, but hide it through in-app rename commands. Since teich is filesystem-canonical and supports external renames, explicit and helpful conflict messages are essential for user clarity.
 
 ## What Changes
 

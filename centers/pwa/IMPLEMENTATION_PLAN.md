@@ -1,6 +1,6 @@
 # PWA Implementation Plan — Web Interaction Surface
 
-This plan defines Phase 6 implementation for the PWA as txtatelier's web interaction surface. It is correctness-first and preserves the core system contract: filesystem is canonical, and the CLI is the only bridge to disk.
+This plan defines Phase 6 implementation for the PWA as teich's web interaction surface. It is correctness-first and preserves the core system contract: filesystem is canonical, and the CLI is the only bridge to disk.
 
 ---
 
@@ -92,7 +92,7 @@ Theme support (daisyUI):
 - Use daisyUI theme names: `light` and `dark` (or custom theme names if needed).
 - Apply theme via `data-theme` attribute on root element.
 - Detect system preference: `window.matchMedia('(prefers-color-scheme: dark)')`.
-- Store user override in localStorage: `txtatelier-theme` (`light`/`dark`/`system`).
+- Store user override in localStorage: `teich-theme` (`light`/`dark`/`system`).
 - Toggle UI: Simple text link "Switch to Dark" / "Switch to Light" in footer or settings.
 
 Design boundary:
@@ -367,7 +367,7 @@ Created: 2026-03-10
 2. **Download backup:**
    - Button: "Download Database Backup".
    - On click: call `evolu.exportDatabase()`, trigger file download.
-   - Filename: `txtatelier-backup-<timestamp>.sqlite`.
+   - Filename: `teich-backup-<timestamp>.sqlite`.
    - Show status: `exporting...` -> `backup exported` or `error: <message>`.
 
 ---

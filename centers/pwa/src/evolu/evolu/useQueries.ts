@@ -1,7 +1,7 @@
 import type {
   Queries,
-  Query,
   QueriesToQueryRowsPromises,
+  Query,
   QueryRows,
   Row,
 } from "@evolu/common/local-first";

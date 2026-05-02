@@ -1,23 +1,14 @@
-import {
-  getFilesShardMutationOptions,
-  type TxtatelierEvolu,
-} from "../evolu/client";
-import { computeContentHash } from "@txtatelier/sync-invariants";
+import { computeContentHash } from "@teich/sync-invariants";
+import { getFilesShardMutationOptions, type TeichEvolu } from "../evolu/client";
 import { createFileRowByPathQuery } from "../evolu/file-by-path-query";
 import { settingsQuery } from "../evolu/settings";
 import { formatSharedLine } from "./format-shared-line";
-import {
-  DEFAULT_INBOX_PATH,
-  validateInboxPath,
-} from "./inbox-path-validation";
-import {
-  deletePendingShare,
-  getPendingShare,
-} from "./pending-share-idb";
+import { DEFAULT_INBOX_PATH, validateInboxPath } from "./inbox-path-validation";
+import { deletePendingShare, getPendingShare } from "./pending-share-idb";
 
 let processing = false;
 
-const resolveInboxPath = async (client: TxtatelierEvolu): Promise<string> => {
+const resolveInboxPath = async (client: TeichEvolu): Promise<string> => {
   const rows = await client.loadQuery(settingsQuery);
   const raw = rows[0]?.inboxPath ?? DEFAULT_INBOX_PATH;
   const validated = validateInboxPath(raw);
@@ -29,7 +20,7 @@ const resolveInboxPath = async (client: TxtatelierEvolu): Promise<string> => {
  * file in Evolu, then clears the key. No-ops if nothing pending or owner not ready.
  */
 export const tryProcessPendingShare = async (
-  client: TxtatelierEvolu,
+  client: TeichEvolu,
 ): Promise<void> => {
   if (processing) return;
   processing = true;
@@ -52,8 +43,7 @@ export const tryProcessPendingShare = async (
 
     const filesShard = await getFilesShardMutationOptions(client);
     const existing = fileRow?.content ?? "";
-    const newContent =
-      existing.length === 0 ? line : `${line}\n${existing}`;
+    const newContent = existing.length === 0 ? line : `${line}\n${existing}`;
 
     const contentHash = await computeContentHash(newContent);
 
@@ -83,7 +73,7 @@ export const tryProcessPendingShare = async (
 
     await deletePendingShare();
   } catch (cause) {
-    console.warn("[txtatelier] pending share drain failed (will retry)", cause);
+    console.warn("[teich] pending share drain failed (will retry)", cause);
   } finally {
     processing = false;
   }

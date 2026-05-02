@@ -1,1 +1,1 @@
-export { FILES_SHARD } from "@txtatelier/sync-invariants";
+export { FILES_SHARD } from "@teich/sync-invariants";

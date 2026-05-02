@@ -13,7 +13,7 @@ describe("createInstanceLock", () => {
   });
 
   test("acquire succeeds then second acquire on same dir fails with AlreadyLocked", async () => {
-    dir = await mkdtemp(join(tmpdir(), "txtatelier-lock-"));
+    dir = await mkdtemp(join(tmpdir(), "teich-lock-"));
     const a = createInstanceLock(dir);
     const b = createInstanceLock(dir);
     const first = await a.acquire();
@@ -29,7 +29,7 @@ describe("createInstanceLock", () => {
   });
 
   test("release allows re-acquire on same directory", async () => {
-    dir = await mkdtemp(join(tmpdir(), "txtatelier-lock-"));
+    dir = await mkdtemp(join(tmpdir(), "teich-lock-"));
     const lock = createInstanceLock(dir);
     expect((await lock.acquire()).ok).toBe(true);
     await lock.release();

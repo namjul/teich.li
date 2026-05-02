@@ -1,13 +1,13 @@
 // Conflict detection and conflict file creation
 // Phase 1: Basic conflict detection (hash comparison)
 
-import { detectConflict as detectConflictFromInvariants } from "@txtatelier/sync-invariants";
 import { basename, dirname, extname, join } from "node:path";
+import { detectConflict as detectConflictFromInvariants } from "@teich/sync-invariants";
 import { writeFileAtomic } from "./write.ts";
 
 /**
  * Re-export for callers that only need 3-way math (tests, legacy imports).
- * Prefer `classifyRemoteChange` from `@txtatelier/sync-invariants` for materialization policy.
+ * Prefer `classifyRemoteChange` from `@teich/sync-invariants` for materialization policy.
  */
 export const detectConflict = detectConflictFromInvariants;
 

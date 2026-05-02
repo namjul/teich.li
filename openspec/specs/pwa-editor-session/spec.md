@@ -49,7 +49,7 @@ The PWA file editor SHALL use a single Zag state machine for the **editor sessio
 
 ### Requirement: Conflict classification in the hook
 
-The PWA SHALL use `classifyRemoteChange` from `@txtatelier/sync-invariants` (or equivalent shared module) for replication-driven conflict decisions. The editor session machine SHALL NOT implement Layer 1–2 logic; it SHALL only receive `ROW_TRUE_DIVERGENCE` when classification yields `true_divergence`. Outcomes `self_echo` and `remote_behind` SHALL be handled outside the FSM (log or hook-only).
+The PWA SHALL use `classifyRemoteChange` from `@teich/sync-invariants` (or equivalent shared module) for replication-driven conflict decisions. The editor session machine SHALL NOT implement Layer 1–2 logic; it SHALL only receive `ROW_TRUE_DIVERGENCE` when classification yields `true_divergence`. Outcomes `self_echo` and `remote_behind` SHALL be handled outside the FSM (log or hook-only).
 
 #### Scenario: Self-echo
 

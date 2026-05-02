@@ -1,14 +1,14 @@
 ## Why
 
-txtatelier currently blocks the terminal and dies when that terminal closes, tying sync to a user session. Running as a managed background service would make sync persistent and addressable by other tools.
+teich currently blocks the terminal and dies when that terminal closes, tying sync to a user session. Running as a managed background service would make sync persistent and addressable by other tools.
 
 ## What Changes
 
-- **BREAKING** (semver-major): `txtatelier` default command changes from foreground start to showing help and exiting 0 — existing shell scripts or startup hooks invoking bare `txtatelier` will silently stop syncing
-- New `txtatelier start [--watch-dir]` command launches a detached background daemon
-- New `txtatelier stop [--watch-dir]` command stops one running instance (not all)
-- New `txtatelier status` command lists all running instances with watch dir, PID, and last heartbeat time
-- New `txtatelier attach [--watch-dir]` command connects an interactive session to a running daemon via Unix socket
+- **BREAKING** (semver-major): `teich` default command changes from foreground start to showing help and exiting 0 — existing shell scripts or startup hooks invoking bare `teich` will silently stop syncing
+- New `teich start [--watch-dir]` command launches a detached background daemon
+- New `teich stop [--watch-dir]` command stops one running instance (not all)
+- New `teich status` command lists all running instances with watch dir, PID, and last heartbeat time
+- New `teich attach [--watch-dir]` command connects an interactive session to a running daemon via Unix socket
 - Daemon state file (`daemon-state.json`) written atomically per watch-dir instance; holds PID, socket path, watch dir, and `updatedAt` heartbeat
 - State file supersedes `proper-lockfile` as the instance uniqueness mechanism; `proper-lockfile` dependency removed
 - stdout/stderr patched at daemon startup to redirect output to the log file only (no tee to clients); `logger.ts` unchanged

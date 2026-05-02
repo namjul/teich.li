@@ -1,7 +1,7 @@
 # IDE-Style Text Editor Behaviors Exploration
 
 **Date:** 2025-04-13  
-**Context:** Evaluating IDE-style interactions for txtatelier's text editing interface  
+**Context:** Evaluating IDE-style interactions for teich's text editing interface  
 **Scope:** Character and line-level editing behaviors, excluding syntax highlighting
 
 ---
@@ -122,7 +122,7 @@ Beyond the reference implementations, the following features would elevate the e
 | **smartPaste** | Adjusts indentation of pasted content to match destination | Critical with softTabs/autoIndent |
 | **pasteAndIndent** | Same as above but explicit | Explicit intent |
 
-### Markdown-Specific (txtatelier Context)
+### Markdown-Specific (teich Context)
 
 | Feature | Description | Value Proposition |
 |:--------|:------------|:------------------|
@@ -203,7 +203,7 @@ This enables:
 
 ---
 
-## Recommendations for txtatelier
+## Recommendations for teich
 
 ### Phase 1: MVP (High Value, Low Complexity)
 
@@ -269,7 +269,7 @@ For IDE behaviors without syntax highlighting:
 - Multiple cursor visualization
 - Widgets embedded in text
 
-For txtatelier's use case (text/markdown files), **textarea + behaviors** is the right choice.
+For teich's use case (text/markdown files), **textarea + behaviors** is the right choice.
 
 ---
 
@@ -285,7 +285,7 @@ Though out of scope for this exploration, if syntax highlighting is added later:
 | **Ohm.js** | Custom DSLs, small files, ~30KB |
 | **Tree-sitter** | Large files, existing languages, incremental, ~700KB |
 
-For txtatelier: Start with regex-based, add Ohm only for custom query syntax, skip Tree-sitter unless users demand professional IDE feel.
+For teich: Start with regex-based, add Ohm only for custom query syntax, skip Tree-sitter unless users demand professional IDE feel.
 
 ---
 

@@ -9,12 +9,12 @@ The CLI SHALL acquire an exclusive instance lock on the resolved watch directory
 
 #### Scenario: First start acquires lock
 
-- **WHEN** the user runs `txtatelier` (or `txtatelier --watch-dir <path>`) and no other process holds the lock for that resolved directory
+- **WHEN** the user runs `teich` (or `teich --watch-dir <path>`) and no other process holds the lock for that resolved directory
 - **THEN** the CLI acquires the lock and continues startup
 
 #### Scenario: Second start on same directory
 
-- **WHEN** another `txtatelier` process already holds the instance lock for the same resolved watch directory
+- **WHEN** another `teich` process already holds the instance lock for the same resolved watch directory
 - **THEN** the new process prints a clear error naming the watch directory and suggesting how to stop the other instance or use a different directory
 - **THEN** the process exits with code 2
 

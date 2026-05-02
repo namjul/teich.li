@@ -2,7 +2,7 @@
 
 ### Requirement: Attach command connects a client to a running daemon
 
-`txtatelier attach [--watch-dir <path>]` SHALL resolve the watch directory using the same logic as all other subcommands (explicit flag or configured default), read the daemon state file to obtain the socket path and PID, print a welcome header, and open a bidirectional JSON lines connection to that instance's Unix socket.
+`teich attach [--watch-dir <path>]` SHALL resolve the watch directory using the same logic as all other subcommands (explicit flag or configured default), read the daemon state file to obtain the socket path and PID, print a welcome header, and open a bidirectional JSON lines connection to that instance's Unix socket.
 
 Welcome output on successful connection:
 1. `printStartupBanner` (version, connection duration)
@@ -10,17 +10,17 @@ Welcome output on successful connection:
 
 #### Scenario: Attach to running instance
 
-- **WHEN** the user runs `txtatelier attach` and a daemon is running for the resolved watch directory
+- **WHEN** the user runs `teich attach` and a daemon is running for the resolved watch directory
 - **THEN** the client connects to that daemon and prints the welcome header
 
 #### Scenario: Attach with explicit watch directory
 
-- **WHEN** the user runs `txtatelier attach --watch-dir <path>`
+- **WHEN** the user runs `teich attach --watch-dir <path>`
 - **THEN** the client connects to the daemon for that specific watch directory
 
 #### Scenario: No daemon running for resolved directory
 
-- **WHEN** the user runs `txtatelier attach` and no daemon is running for the resolved watch directory
+- **WHEN** the user runs `teich attach` and no daemon is running for the resolved watch directory
 - **THEN** the CLI prints an error and exits with a non-zero code
 
 ### Requirement: JSON lines command protocol
@@ -90,7 +90,7 @@ The daemon SHALL accept and serve multiple concurrent attach connections on the 
 
 #### Scenario: Two clients attached simultaneously
 
-- **WHEN** two terminals each run `txtatelier attach` for the same watch directory
+- **WHEN** two terminals each run `teich attach` for the same watch directory
 - **THEN** each client can independently send commands and receive responses
 - **THEN** commands from both clients are processed sequentially by the daemon
 
@@ -110,4 +110,4 @@ The attach client SHALL detect when the daemon closes the socket unexpectedly an
 #### Scenario: Daemon crashes while client is attached
 
 - **WHEN** the daemon process dies while one or more clients are attached
-- **THEN** each affected client prints `[txtatelier] daemon disconnected` and exits non-zero
+- **THEN** each affected client prints `[teich] daemon disconnected` and exits non-zero

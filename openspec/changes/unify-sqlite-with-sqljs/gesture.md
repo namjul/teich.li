@@ -10,7 +10,7 @@ sqlite-driver-unification
 Replacing native SQLite drivers (better-sqlite3, bun:sqlite) with sql.js (WASM) will eliminate runtime-specific driver complexity while maintaining acceptable performance for personal note-taking workloads (databases < 100MB).
 
 ## What made us do this?
-We hit `SQLITE_CANTOPEN` on Node when opening a database from a buffer with WAL enabled — WAL needs a filesystem path for its journal files, but buffer-loaded databases don't have one. We fixed this with temp files, but the pattern reveals a deeper misalignment: WAL optimizes for continuous disk streaming, but txtatelier's 5-second debounced snapshot persistence doesn't leverage that model anyway.
+We hit `SQLITE_CANTOPEN` on Node when opening a database from a buffer with WAL enabled — WAL needs a filesystem path for its journal files, but buffer-loaded databases don't have one. We fixed this with temp files, but the pattern reveals a deeper misalignment: WAL optimizes for continuous disk streaming, but teich's 5-second debounced snapshot persistence doesn't leverage that model anyway.
 
 The sql.js reference (Obsidian-style) uses explicit `db.export()` + `io.writeFile` — matching exactly what we already do with debounced saves. This suggests our architecture is better suited to sql.js's explicit persistence model than to native SQLite's WAL model.
 

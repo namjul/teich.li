@@ -1,7 +1,7 @@
 // Pure planning functions for state materialization (Evolu → filesystem)
 // No I/O - just data transformation
 
-import { classifyRemoteChange } from "@txtatelier/sync-invariants";
+import { classifyRemoteChange } from "@teich/sync-invariants";
 import { generateConflictPath } from "../conflicts.ts";
 import type { SyncAction } from "./actions.ts";
 import {

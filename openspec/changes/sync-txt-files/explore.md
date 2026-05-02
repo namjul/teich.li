@@ -4,7 +4,7 @@
 
 The current sync treats all non-ignored files equally: any file that passes the ignore filter (dotfiles, temp files, system files) gets synced into Evolu as a `File` record. There is no notion of what _kind_ of file is meaningful to the app.
 
-txtatelier is fundamentally a tool for working with text files. The app has a concept of a text format — blocks of lines, sigil-prefixed special blocks, empty lines ignored — and `.txt` is the natural first concrete extension for that format. But right now the sync has no awareness of this distinction.
+teich is fundamentally a tool for working with text files. The app has a concept of a text format — blocks of lines, sigil-prefixed special blocks, empty lines ignored — and `.txt` is the natural first concrete extension for that format. But right now the sync has no awareness of this distinction.
 
 The ignore system (`ignore.ts`) operates as a denylist: specific patterns are excluded. There is no allowlist of what should positively be included.
 

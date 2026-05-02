@@ -1,6 +1,6 @@
 ## Context
 
-txtatelier currently runs as a foreground process that blocks the terminal and dies when the terminal closes. There is no way to ask "is it running?" without keeping the terminal open. This design makes txtatelier a managed background service.
+teich currently runs as a foreground process that blocks the terminal and dies when the terminal closes. There is no way to ask "is it running?" without keeping the terminal open. This design makes teich a managed background service.
 
 The reference implementation is [busytown-pi](https://github.com/gordonbrander/busytown-pi), which solves the same daemon lifecycle problem. Several modules from that codebase are adapted here; others are explicitly excluded.
 
@@ -41,7 +41,7 @@ Current state:
 
 **Decision:** After spawning the daemon, the parent polls for the state file to appear (up to a timeout) before printing confirmation and exiting. Poll parameters: 20 iterations × 250ms = 5 seconds maximum wait.
 
-**Rationale:** The alternative is an IPC channel (Node `child_process` `ipc` stdio option). IPC is simpler but not portable to Deno, which txtatelier may eventually target. Polling the state file is runtime-agnostic and produces the same result: the parent knows the daemon is alive before reporting success.
+**Rationale:** The alternative is an IPC channel (Node `child_process` `ipc` stdio option). IPC is simpler but not portable to Deno, which teich may eventually target. Polling the state file is runtime-agnostic and produces the same result: the parent knows the daemon is alive before reporting success.
 
 **Alternative considered:** IPC channel. Rejected: Deno portability gap; polling is only slightly slower.
 
@@ -53,7 +53,7 @@ Current state:
 
 **Rationale:** Hardcoding `bun` or `node` breaks when the binary is installed via a different runtime or path. `process.execPath` is always the correct runtime for the currently running process.
 
-**Daemon mode signal:** The daemon is spawned as `txtatelier start --watch-dir <resolvedWatchDir> --log <logPath>`. The `--log` flag is both the daemon mode signal and the log path. When `txtatelier start` detects `--log`, it redirects stdout/stderr to the log file and runs the sync loop directly. When `--log` is absent, `txtatelier start` spawns a daemon child and exits.
+**Daemon mode signal:** The daemon is spawned as `teich start --watch-dir <resolvedWatchDir> --log <logPath>`. The `--log` flag is both the daemon mode signal and the log path. When `teich start` detects `--log`, it redirects stdout/stderr to the log file and runs the sync loop directly. When `--log` is absent, `teich start` spawns a daemon child and exits.
 
 **busytown-pi:** Identical pattern — spawns `busytown start --log <path>` with `--log` as the daemon signal.
 
@@ -61,11 +61,11 @@ Current state:
 
 ### No-args shows help (not foreground, not status)
 
-**Decision:** `txtatelier` with no arguments prints help and exits 0. The foreground behavior moves exclusively to `txtatelier start`.
+**Decision:** `teich` with no arguments prints help and exits 0. The foreground behavior moves exclusively to `teich start`.
 
 **Rationale:** A service tool's default should orient the user, not start a process. "What can I do?" is the right answer when nothing is specified. Running `ps` requires scanning state files, which is non-trivial for a default; foreground silently contradicts the daemon model.
 
-**busytown-pi:** `txtatelier` with no args shows help — same decision.
+**busytown-pi:** `teich` with no args shows help — same decision.
 
 ---
 
@@ -79,7 +79,7 @@ Current state:
 
 ### Start when already running: informational, exit 0
 
-**Decision:** If `txtatelier start` finds a live daemon for the resolved watch dir, it prints an informational message and exits 0.
+**Decision:** If `teich start` finds a live daemon for the resolved watch dir, it prints an informational message and exits 0.
 
 **Rationale:** The desired outcome (daemon running for that dir) is already achieved. Exiting non-zero would make `start` hostile to idempotent invocation (shell scripts, startup hooks). The `spawnDaemon` function enforces this internally so the check is consistent whether called from CLI or programmatically.
 
@@ -87,9 +87,9 @@ Current state:
 
 ### Stop: SIGTERM → poll → SIGKILL
 
-**Decision:** `txtatelier stop` sends SIGTERM, polls until the PID is gone (using `abortableSleep` between polls), and sends SIGKILL if the daemon does not exit within the timeout. Poll parameters: 10 iterations × 500ms = 5 seconds before SIGKILL.
+**Decision:** `teich stop` sends SIGTERM, polls until the PID is gone (using `abortableSleep` between polls), and sends SIGKILL if the daemon does not exit within the timeout. Poll parameters: 10 iterations × 500ms = 5 seconds before SIGKILL.
 
-**busytown-pi:** Same pattern (without SIGKILL fallback — txtatelier adds it).
+**busytown-pi:** Same pattern (without SIGKILL fallback — teich adds it).
 
 ---
 
@@ -120,9 +120,9 @@ Response schema: `{ ok: boolean; output: string }` — `output` is the text to d
 
 **`q` and `c` are client-side only:** The attach client intercepts `q` + Enter and closes the socket without sending a command to the daemon. `c` + Enter clears the client's local terminal (`process.stdout.write('\x1Bc')`) without involving the daemon. Ctrl+C is handled by the client catching SIGINT and closing the connection. Neither `q` nor `c` is sent over the socket.
 
-**Rationale:** The daemon's lifecycle is independent of attach sessions. To stop the daemon, use `txtatelier stop`. Having a stop-from-attach key creates two paths to the same operation, one of which is hidden and discoverable only by accident.
+**Rationale:** The daemon's lifecycle is independent of attach sessions. To stop the daemon, use `teich stop`. Having a stop-from-attach key creates two paths to the same operation, one of which is hidden and discoverable only by accident.
 
-**Alternative considered:** `x` + Enter to stop-and-detach. Rejected: redundant with `txtatelier stop`.
+**Alternative considered:** `x` + Enter to stop-and-detach. Rejected: redundant with `teich stop`.
 
 ---
 
@@ -210,7 +210,7 @@ The attach client provides these callbacks as socket-command wrappers (e.g. `sho
 
 ### `session.quit()` removed
 
-**Decision:** `session.quit()` is removed. Daemon shutdown happens exclusively via SIGTERM (sent by `txtatelier stop`). The SIGTERM handler calls `session.stop()` directly.
+**Decision:** `session.quit()` is removed. Daemon shutdown happens exclusively via SIGTERM (sent by `teich stop`). The SIGTERM handler calls `session.stop()` directly.
 
 **Rationale:** With no foreground mode and no in-band stop key in attach mode, `session.quit()` has no callers.
 
@@ -218,7 +218,7 @@ The attach client provides these callbacks as socket-command wrappers (e.g. `sho
 
 ### Daemon startup log entry
 
-**Decision:** When the daemon starts in `--log` mode, the first log entry is a plain structured line: `[txtatelier] daemon started pid=<pid> watchDir=<path> version=<version>`. The `printStartupBanner` call is suppressed in daemon mode — the banner is a foreground terminal artifact.
+**Decision:** When the daemon starts in `--log` mode, the first log entry is a plain structured line: `[teich] daemon started pid=<pid> watchDir=<path> version=<version>`. The `printStartupBanner` call is suppressed in daemon mode — the banner is a foreground terminal artifact.
 
 **Rationale:** The log file is the only pre-attach observability surface. A scannable structured line (with timestamp from the logger) is more useful than an ANSI-stripped banner.
 
@@ -234,7 +234,7 @@ The attach client provides these callbacks as socket-command wrappers (e.g. `sho
 
 ### Attach: daemon crash detection
 
-**Decision:** When the socket closes from the daemon side (unexpected — not initiated by `q` or Ctrl+C), the attach client prints `[txtatelier] daemon disconnected` and exits non-zero.
+**Decision:** When the socket closes from the daemon side (unexpected — not initiated by `q` or Ctrl+C), the attach client prints `[teich] daemon disconnected` and exits non-zero.
 
 **Rationale:** Distinguishes crash from normal detach; signals to the user that investigation is needed.
 
@@ -258,11 +258,11 @@ The attach client provides these callbacks as socket-command wrappers (e.g. `sho
 
 ### `logs` command dropped
 
-**Decision:** `txtatelier logs` is not implemented. The log file path is stored in the state file; users can open it directly.
+**Decision:** `teich logs` is not implemented. The log file path is stored in the state file; users can open it directly.
 
-**Rationale:** The command would only add value for reading historical output before an attach connection — a narrow use case that doesn't justify the implementation. `txtatelier attach` covers real-time observation.
+**Rationale:** The command would only add value for reading historical output before an attach connection — a narrow use case that doesn't justify the implementation. `teich attach` covers real-time observation.
 
-**Known gap:** When a daemon has crashed, `ps` cleans up the stale state file, so the log path is no longer discoverable without knowing the instance hash. A `txtatelier logs --watch-dir <path>` that derives and prints the log path (without tailing) would be a ~5-line addition and would cover crash investigation. Deferred — not in scope for this change.
+**Known gap:** When a daemon has crashed, `ps` cleans up the stale state file, so the log path is no longer discoverable without knowing the instance hash. A `teich logs --watch-dir <path>` that derives and prints the log path (without tailing) would be a ~5-line addition and would cover crash investigation. Deferred — not in scope for this change.
 
 ---
 

@@ -1,7 +1,7 @@
 import {
   classifyRemoteChange,
   computeContentHash,
-} from "@txtatelier/sync-invariants";
+} from "@teich/sync-invariants";
 import { createEffect, createMemo, createSignal, onCleanup } from "solid-js";
 import { evolu, getFilesShardMutationOptions } from "../../evolu/client";
 import { createUseEvolu } from "../../evolu/evolu";

@@ -15,7 +15,9 @@ export interface ControlledTextareaCaretOptions {
  * `@solid-primitives/selection` (the primitive's live `selection()` can already reflect
  * the browser's post-reset range).
  */
-export const useControlledTextareaCaret = (args: ControlledTextareaCaretOptions) => {
+export const useControlledTextareaCaret = (
+  args: ControlledTextareaCaretOptions,
+) => {
   const [, setDomSelection] = createSelection();
 
   let textareaEl: HTMLTextAreaElement | undefined;
@@ -73,9 +75,7 @@ export const useControlledTextareaCaret = (args: ControlledTextareaCaretOptions)
     args.onValueChange(el.value);
   };
 
-  const onSelect = (
-    event: Event & { currentTarget: HTMLTextAreaElement },
-  ) => {
+  const onSelect = (event: Event & { currentTarget: HTMLTextAreaElement }) => {
     captureCaret(event.currentTarget);
   };
 

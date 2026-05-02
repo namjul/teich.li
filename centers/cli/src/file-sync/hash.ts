@@ -1,7 +1,7 @@
-// Content hashing: canonical algorithm in @txtatelier/sync-invariants; disk I/O here.
+// Content hashing: canonical algorithm in @teich/sync-invariants; disk I/O here.
 
-import { computeContentHash, computeHash } from "@txtatelier/sync-invariants";
 import { readFile } from "node:fs/promises";
+import { computeContentHash, computeHash } from "@teich/sync-invariants";
 
 export { computeContentHash, computeHash };
 

@@ -19,10 +19,10 @@ TBD - created by archiving change vite-style-interactive-cli. Update Purpose aft
 
 ### Requirement: Non-interactive owner subcommand
 
-The `txtatelier owner` subcommand with `--show`, `--where`, and `--reset --yes` SHALL remain available for scripts and non-TTY environments.
+The `teich owner` subcommand with `--show`, `--where`, and `--reset --yes` SHALL remain available for scripts and non-TTY environments.
 
 #### Scenario: Scripted show
 
-- **WHEN** the user runs `txtatelier owner --show` without a TTY
+- **WHEN** the user runs `teich owner --show` without a TTY
 - **THEN** the mnemonic is printed to stdout and the process exits
 

@@ -1,10 +1,10 @@
-# Agent Instructions for txtatelier
+# Agent Instructions for teich.li
 
 This file provides coding guidelines for AI agents working on this local-first file synchronization system.
 
 ## Project Overview
 
-**txtatelier** is a local-first, multi-device file sync system where:
+**teich.li** is a local-first, multi-device file sync system where:
 - **Filesystem is canonical** - all truth resides on disk
 - **Evolu** provides distributed replication
 - **CLI** bridges filesystem ↔ Evolu with **change capture** (Filesystem → Evolu) and **state materialization** (Evolu → Filesystem)
@@ -60,7 +60,7 @@ bun run preview          # Preview production build
 ```bash
 bun run test             # Run all Vitest projects (repo root, see vitest.config.ts)
 bun run test:watch       # Vitest watch (root)
-bun run test --project @txtatelier/pwa   # One workspace only (also: sync-invariants, cli)
+bun run test --project @teich/pwa   # One workspace only (also: sync-invariants, cli)
 cd centers/pwa && bun run test           # Same, from a single center
 vitest run path/to/file.test.ts          # Single file (from repo root or center)
 bun run test --coverage                  # Coverage (when configured)
@@ -87,18 +87,20 @@ bun run cli doctor       # Diagnose issues
 
 **Logging:**
 ```bash
-TXTATELIER_LOG_LEVEL=DEBUG    # Show all logs including file operations
-TXTATELIER_LOG_LEVEL=INFO     # Show minimal lifecycle logs (default)
-TXTATELIER_LOG_LEVEL=ERROR      # Show only errors
+TEICH_LOG_LEVEL=DEBUG    # Show all logs including file operations
+TEICH_LOG_LEVEL=INFO     # Show minimal lifecycle logs (default)
+TEICH_LOG_LEVEL=ERROR    # Show only errors
 ```
 
 **Other variables:**
 ```bash
-TXTATELIER_WATCH_DIR=<path>   # Directory to watch for changes
-TXTATELIER_DB_PATH=<path>     # Database file path
-TXTATELIER_MNEMONIC=<words>   # 12 or 24-word mnemonic for owner restore
-TXTATELIER_RELAY_URL=<url>    # WebSocket relay URL (default: wss://free.evoluhq.com)
+TEICH_WATCH_DIR=<path>   # Directory to watch for changes
+TEICH_DB_PATH=<path>     # Database file path
+TEICH_MNEMONIC=<words>   # 12 or 24-word mnemonic for owner restore
+TEICH_RELAY_URL=<url>    # WebSocket relay URL (default: wss://free.evoluhq.com)
 ```
+
+**Data path:** `~/.local/share/teich/` (Linux) / `~/Library/Application Support/teich/` (macOS). Renamed from `txtatelier` — existing data at old path needs manual migration (`mv ~/.local/share/txtatelier ~/.local/share/teich`).
 
 ---
 

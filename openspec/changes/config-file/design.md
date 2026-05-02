@@ -8,7 +8,7 @@
 - Config schema lives in `centers/cli/src/config/` as a new module
 
 **File location search:**
-- Search for `txtatelier.config.json` in order: CLI `--config` flag → current directory → home directory → XDG config directory (`~/.config/txtatelier/`)
+- Search for `teich.config.json` in order: CLI `--config` flag → current directory → home directory → XDG config directory (`~/.config/teich/`)
 - First file found wins, no merging of multiple configs
 - If no file found and required fields missing, fail with helpful error pointing to docs
 
@@ -56,7 +56,7 @@
 
 **Risk: Breaking changes to config schema** - adding required fields or changing validation breaks existing configs. Mitigation: prefer optional fields with defaults, document schema versioning strategy.
 
-**Trade-off: No environment variable overrides** - some users might expect `TXTATELIER_WATCH_DIR` style overrides. We're choosing file-based config only for simplicity. Can add env vars later if needed.
+**Trade-off: No environment variable overrides** - some users might expect `TEICH_WATCH_DIR` style overrides. We're choosing file-based config only for simplicity. Can add env vars later if needed.
 
 **Trade-off: No hot reloading** - changing config requires restart. This is acceptable for CLI but might feel dated to some users. Hot reload adds significant complexity for uncertain benefit.
 
@@ -69,7 +69,7 @@
 - Config migration system (for schema breaking changes)
 - Encrypted config fields
 - Remote config fetching
-- Config validation CLI command (may add later as `txtatelier config validate`)
+- Config validation CLI command (may add later as `teich config validate`)
 
 **Not supporting:**
 - YAML, TOML, or other formats (JSON only for now)
@@ -107,7 +107,7 @@
 
 Config loading adds startup latency (file I/O + validation). Should be <100ms on normal systems but could be noticeable on slow disks or network filesystems.
 
-Users will see delay before sync starts. Need clear progress indication: "Loading config from ~/.config/txtatelier/txtatelier.config.json..."
+Users will see delay before sync starts. Need clear progress indication: "Loading config from ~/.config/teich/teich.config.json..."
 
 Error messages must be immediate and actionable - if config is invalid, user needs to know exactly what to fix without trial and error.
 
@@ -126,4 +126,4 @@ This is intentional trade-off for safety, but means onboarding requires more ste
 Good: users can experiment with different debounce values by editing config
 Risk: users might be intimidated by required fields and not try the tool at all
 
-Mitigation: provide `txtatelier init` command (future) that generates config interactively, or clear error message with example config when file is missing.
+Mitigation: provide `teich init` command (future) that generates config interactively, or clear error message with example config when file is missing.

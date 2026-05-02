@@ -108,7 +108,7 @@ export const createInteractiveLogger = (
     };
   };
 
-  // Banner, shortcuts, and help must show even when TXTATELIER_LOG_LEVEL=ERROR
+  // Banner, shortcuts, and help must show even when TEICH_LOG_LEVEL=ERROR
   // (default in env.ts); those lines are CLI UX, not noisy sync logs.
   const uxConsoleInfo = (...args: unknown[]): void => {
     // eslint-disable-next-line no-console
@@ -158,7 +158,7 @@ export const createInteractiveLogger = (
           rl.resume();
         }
       }
-      const line = `${pc.green("TXTAELIER")} ${pc.dim(`v${opts.version}`)}  ${pc.green(`ready in ${formatReadyDuration(opts.durationMs)}`)}`;
+      const line = `${pc.green("Teich")} ${pc.dim(`v${opts.version}`)}  ${pc.green(`ready in ${formatReadyDuration(opts.durationMs)}`)}`;
       syncedInfo(line);
     },
   };

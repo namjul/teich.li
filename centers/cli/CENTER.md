@@ -8,7 +8,7 @@
 
 ## What This Center Does
 
-Command-line interface for txtatelier. Provides user commands for sync operations, conflict management, and system observability.
+Command-line interface for teich. Provides user commands for sync operations, conflict management, and system observability.
 
 Currently: Blank canvas - no functionality implemented.
 
@@ -144,19 +144,19 @@ const confirmMnemonicSaved = async (mnemonic: string): Promise<void> => {
 
 **CLI Commands Added:**
 ```bash
-txtatelier init --root <path>   # One-time setup: validate, config, install service, start
-txtatelier start                # Manual start (checks for running instance)
-txtatelier start --foreground   # For OS service manager (never daemonizes)
-txtatelier stop                 # Stop service
-txtatelier restart              # Restart service
-txtatelier status               # Check service state
-txtatelier service install      # Install OS service definition
-txtatelier service uninstall    # Remove OS service
-txtatelier doctor               # Diagnose configuration issues
+teich init --root <path>   # One-time setup: validate, config, install service, start
+teich start                # Manual start (checks for running instance)
+teich start --foreground   # For OS service manager (never daemonizes)
+teich stop                 # Stop service
+teich restart              # Restart service
+teich status               # Check service state
+teich service install      # Install OS service definition
+teich service uninstall    # Remove OS service
+teich doctor               # Diagnose configuration issues
 ```
 
 **Config File Approach:**
-- Location: `~/.config/txtatelier/config.json`
+- Location: `~/.config/teich/config.json`
 - Contents:
   ```json
   {
@@ -166,20 +166,20 @@ txtatelier doctor               # Diagnose configuration issues
     "relayUrl": "ws://localhost:4000"
   }
   ```
-- Replaces environment variables (TXTATELIER_WATCH_DIR, etc.)
+- Replaces environment variables (TEICH_WATCH_DIR, etc.)
 - Simple read/write utility functions (not a "Config Center")
 
 **Implementation Details:**
 
 **macOS (LaunchAgent):**
 ```xml
-<!-- ~/Library/LaunchAgents/com.txtatelier.sync.plist -->
+<!-- ~/Library/LaunchAgents/com.teich.sync.plist -->
 <plist>
   <key>Label</key>
-  <string>com.txtatelier.sync</string>
+  <string>com.teich.sync</string>
   <key>ProgramArguments</key>
   <array>
-    <string>/absolute/path/to/txtatelier</string>
+    <string>/absolute/path/to/teich</string>
     <string>start</string>
     <string>--foreground</string>
   </array>
@@ -192,12 +192,12 @@ txtatelier doctor               # Diagnose configuration issues
 
 **Linux (systemd user service):**
 ```ini
-# ~/.config/systemd/user/txtatelier.service
+# ~/.config/systemd/user/teich.service
 [Unit]
-Description=Txtatelier Sync Service
+Description=Teich.li Sync Service
 
 [Service]
-ExecStart=/absolute/path/to/txtatelier start --foreground
+ExecStart=/absolute/path/to/teich start --foreground
 Restart=always
 RestartSec=5
 
@@ -207,8 +207,8 @@ WantedBy=default.target
 
 **Windows (Task Scheduler):**
 ```bash
-schtasks /Create /SC ONLOGON /TN txtatelier \
-  /TR "C:\Path\to\txtatelier.exe start --foreground" \
+schtasks /Create /SC ONLOGON /TN teich \
+  /TR "C:\Path\to\teich.exe start --foreground" \
   /RL LIMITED
 ```
 
@@ -216,7 +216,7 @@ schtasks /Create /SC ONLOGON /TN txtatelier \
 - Process NEVER forks or daemonizes itself
 - OS service manager controls lifecycle
 - All logs go to stdout/stderr (OS captures them)
-- Single-instance lock prevents double-start (flock on `~/.config/txtatelier/lock`)
+- Single-instance lock prevents double-start (flock on `~/.config/teich/lock`)
 - Service is per-user only (no admin/root required)
 
 **Center Impact:**

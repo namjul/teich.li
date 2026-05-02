@@ -74,10 +74,10 @@ export const CommandMenuDialog = (props: {
         <Dialog.Positioner class="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto p-4 pt-[12vh]">
           <Dialog.Content
             class="w-full max-w-lg border border-black/20 bg-[#f2f1ee] text-[#111111] shadow-lg dark:border-white/20 dark:bg-[#1a1b1c] dark:text-[#efefef]"
-            aria-labelledby="txtatelier-file-switcher-title"
+            aria-labelledby="teich-file-switcher-title"
           >
             <Dialog.Title
-              id="txtatelier-file-switcher-title"
+              id="teich-file-switcher-title"
               class="border-b border-black/15 px-3 py-2 text-sm font-semibold flex items-center gap-1.5 whitespace-nowrap dark:border-white/15"
             >
               <span class="shrink-0">{titleParts().left}</span>

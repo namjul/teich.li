@@ -1,3 +1,11 @@
+export type {
+  FileSyncConfig,
+  FileSyncSession,
+  FileSyncStartOptions,
+  OwnerSession,
+  ReadLineFn,
+  StartupFatalError,
+} from "./file-sync/index.ts";
 export {
   createOwnerSession,
   defaultDbPath,
@@ -9,12 +17,4 @@ export {
   showOwnerContext,
   showOwnerMnemonic,
   startFileSync,
-} from "./file-sync/index.ts";
-export type {
-  FileSyncConfig,
-  FileSyncSession,
-  FileSyncStartOptions,
-  OwnerSession,
-  ReadLineFn,
-  StartupFatalError,
 } from "./file-sync/index.ts";

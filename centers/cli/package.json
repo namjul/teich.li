@@ -1,14 +1,14 @@
 {
-  "name": "@txtatelier/cli",
+  "name": "@teich/cli",
   "version": "0.0.1",
-  "description": "CLI for txtatelier local-first file sync",
+  "description": "CLI for teich local-first file sync",
   "type": "module",
   "main": "src/index.ts",
   "exports": {
     ".": "./src/index.ts"
   },
   "bin": {
-    "txtatelier": "src/cli.ts"
+    "teich": "src/cli.ts"
   },
   "files": [
     "src",
@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@evolu/common": "^7.4.0",
-    "@txtatelier/sync-invariants": "workspace:*",
+    "@teich/sync-invariants": "workspace:*",
     "@types/proper-lockfile": "^4.1.4",
     "chokidar": "^5.0.0",
     "citty": "^0.2.2",
@@ -54,12 +54,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/namjul/txtatelier.git",
+    "url": "https://github.com/namjul/teich.git",
     "directory": "centers/cli"
   },
   "bugs": {
-    "url": "https://github.com/namjul/txtatelier/issues"
+    "url": "https://github.com/namjul/teich/issues"
   },
-  "homepage": "https://github.com/namjul/txtatelier#readme",
+  "homepage": "https://github.com/namjul/teich#readme",
   "license": "MIT"
 }

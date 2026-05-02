@@ -209,7 +209,7 @@ Create utility that documents the exception once:
 /** 
  * Console output that bypasses the logger system.
  * Used for CLI UX (banners, shortcuts, help) that must be visible 
- * even when TXTATELIER_LOG_LEVEL=ERROR.
+ * even when TEICH_LOG_LEVEL=ERROR.
  */
 export const uxOutput = (...args: unknown[]): void => {
   // eslint-disable-next-line no-console

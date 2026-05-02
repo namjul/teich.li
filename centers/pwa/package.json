@@ -1,7 +1,7 @@
 {
-  "name": "@txtatelier/pwa",
+  "name": "@teich/pwa",
   "version": "0.0.0",
-  "description": "PWA editor for txtatelier",
+  "description": "PWA editor for teich",
   "private": true,
   "type": "module",
   "scripts": {
@@ -12,7 +12,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@txtatelier/sync-invariants": "workspace:*",
+    "@teich/sync-invariants": "workspace:*",
     "@ark-ui/solid": "^5.35.0",
     "@evolu/common": "^7.4.0",
     "@evolu/web": "^2.4.0",

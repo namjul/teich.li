@@ -2,7 +2,7 @@ import type { EvoluError } from "@evolu/common";
 import { deriveShardOwner } from "@evolu/common/local-first";
 import { createShortcut } from "@solid-primitives/keyboard";
 import { createPageVisibility } from "@solid-primitives/page-visibility";
-import { FILES_SHARD } from "@txtatelier/sync-invariants";
+import { FILES_SHARD } from "@teich/sync-invariants";
 import {
   createEffect,
   createResource,
@@ -58,9 +58,9 @@ const FilesWorkspace = (props: {
   createEffect(() => {
     const file = fileList.selectedFile();
     if (file) {
-      document.title = `${file.path} — txtatelier`;
+      document.title = `${file.path} — teich.li`;
     } else {
-      document.title = "txtatelier";
+      document.title = "teich.li";
     }
   });
 

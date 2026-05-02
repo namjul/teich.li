@@ -39,7 +39,7 @@ jobs:
       - name: Build PWA
         working-directory: centers/pwa
         env:
-          VITE_TXTATELIER_BASE_PATH: /${{ github.event.repository.name }}/
+          VITE_TEICH_BASE_PATH: /
         run: |
           export VITE_COMMIT_SHA="${GITHUB_SHA:0:7}"
           export VITE_COMMIT_MESSAGE="$(git log -1 --pretty=%s)"

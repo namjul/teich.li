@@ -19,7 +19,7 @@ The CLI package SHALL declare `sql.js` as a runtime dependency for SQLite and SH
 
 #### Scenario: Installable without native SQLite addon
 
-- **WHEN** a developer installs `@txtatelier/cli` dependencies
+- **WHEN** a developer installs `@teich/cli` dependencies
 - **THEN** SQLite SHALL not require compiling or loading the `better-sqlite3` native addon for the file-sync database path described in this change
 
 #### Scenario: Optional typing for sql.js

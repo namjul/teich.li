@@ -1,22 +1,22 @@
 # Daemon Architecture Exploration
 
-**Source:** Comparison of busytown-pi's daemon pattern against txtatelier's current foreground-only CLI
+**Source:** Comparison of busytown-pi's daemon pattern against teich's current foreground-only CLI
 
 **Reference:** https://github.com/gordonbrander/busytown-pi — relevant files: `src/cli.ts`, `src/daemon.ts`, `src/daemon-state.ts`, `src/process-system.ts`, `src/dashboard.ts`, `src/index.ts`, `src/lib/cleanup.ts`, `src/lib/promise.ts`, `src/lib/json-logger.ts`
 
-**Trigger:** txtatelier currently has no way to run in the background. The process blocks the terminal and dies when the terminal closes.
+**Trigger:** teich currently has no way to run in the background. The process blocks the terminal and dies when the terminal closes.
 
 ---
 
 ## The Problem
 
 ```
-txtatelier          ← blocks terminal
+teich          ← blocks terminal
 Ctrl+C              ← sync stops
 close terminal      ← sync stops (SIGHUP)
 ```
 
-There is no way to ask "is txtatelier running?" without having the terminal open. Sync is tied to a session.
+There is no way to ask "is teich running?" without having the terminal open. Sync is tied to a session.
 
 ---
 
@@ -37,7 +37,7 @@ daemon.ts         — spawn/stop the CLI as a detached background process
 
 process-system.ts — supervise multiple child processes with auto-restart
                     exponential backoff, SIGTERM→SIGKILL escalation
-                    (NOT relevant to txtatelier — different problem domain)
+                    (NOT relevant to teich — different problem domain)
 ```
 
 ---
@@ -48,7 +48,7 @@ process-system.ts — supervise multiple child processes with auto-restart
 
 `detached: true` moves the child into its own process group — no longer a child of the shell session. `stdio: 'ignore'` closes the inherited file descriptors tied to the terminal. `child.unref()` tells the runtime not to wait for it. After the parent exits, the child is owned by PID 1.
 
-Close the terminal — txtatelier keeps syncing.
+Close the terminal — teich keeps syncing.
 
 ### Startup on login
 
@@ -70,12 +70,12 @@ What each shortcut becomes in daemon mode:
 
 | Shortcut | What it does | Daemon equivalent |
 |---|---|---|
-| `u` | show status | `txtatelier status` (new) |
-| `s` | show mnemonic | `txtatelier owner --show` (exists) |
+| `u` | show status | `teich status` (new) |
+| `s` | show mnemonic | `teich owner --show` (exists) |
 | `p` | restore mnemonic | foreground-only (needs interactive stdin) |
-| `d` | reset owner | `txtatelier owner --reset --yes` (exists) |
+| `d` | reset owner | `teich owner --reset --yes` (exists) |
 | `c` | clear viewport | meaningless in daemon mode |
-| `q` | quit | `txtatelier stop` (new) |
+| `q` | quit | `teich stop` (new) |
 
 ---
 
@@ -102,24 +102,24 @@ The state file is what makes the socket findable and meaningful.
 
 ## Multiple Instances
 
-txtatelier already scopes everything per watch directory via hash:
+teich already scopes everything per watch directory via hash:
 
 ```
-instance lock:  ~/.cache/txtatelier/instance-locks/{hash(watchDir)}.lock
-DB:             ~/.local/share/txtatelier/txtatelier-{hash(watchDir)}.db
+instance lock:  ~/.cache/teich/instance-locks/{hash(watchDir)}.lock
+DB:             ~/.local/share/teich/teich-{hash(watchDir)}.db
 ```
 
 Multiple daemons for different watch dirs coexist naturally. Daemon state files and sockets follow the same pattern:
 
 ```
-~/.local/share/txtatelier/instances/{hash}/daemon-state.json
-~/.local/share/txtatelier/instances/{hash}/txtatelier.sock
+~/.local/share/teich/instances/{hash}/daemon-state.json
+~/.local/share/teich/instances/{hash}/teich.sock
 ```
 
-`txtatelier start` (same dir twice) → reads state file, checks PID, errors if alive.
-`txtatelier start --watch-dir ~/journal` → different hash, independent daemon.
+`teich start` (same dir twice) → reads state file, checks PID, errors if alive.
+`teich start --watch-dir ~/journal` → different hash, independent daemon.
 
-**busytown-pi's stop command** stops one instance scoped to a project root — not all. There is no stop-all. `txtatelier stop` follows the same model.
+**busytown-pi's stop command** stops one instance scoped to a project root — not all. There is no stop-all. `teich stop` follows the same model.
 
 ---
 
@@ -128,18 +128,18 @@ Multiple daemons for different watch dirs coexist naturally. Daemon state files 
 Mental model: **a service you manage**, not a command you run.
 
 ```bash
-txtatelier start [--watch-dir]   # launch daemon for that dir
-txtatelier stop  [--watch-dir]   # stop one instance (not all)
-txtatelier status                # list all running instances
-txtatelier attach [--watch-dir]  # connect interactive TUI
-txtatelier logs  [--watch-dir]   # tail log file
+teich start [--watch-dir]   # launch daemon for that dir
+teich stop  [--watch-dir]   # stop one instance (not all)
+teich status                # list all running instances
+teich attach [--watch-dir]  # connect interactive TUI
+teich logs  [--watch-dir]   # tail log file
 
-txtatelier owner --show          # one-shot, no daemon needed
-txtatelier owner --where
-txtatelier owner --reset --yes
+teich owner --show          # one-shot, no daemon needed
+teich owner --where
+teich owner --reset --yes
 ```
 
-`txtatelier status` reads all state files and shows a summary:
+`teich status` reads all state files and shows a summary:
 
 ```
   ~/notes    pid 8421  running  312 files  3s ago   ● connected
@@ -166,11 +166,11 @@ The socket replaces what was previously stdin and stdout. The daemon's existing 
 **Attach selection** when multiple instances are running:
 
 ```
-0 running  →  error: "No txtatelier instances running. Use 'txtatelier start'."
+0 running  →  error: "No teich instances running. Use 'teich start'."
 1 running  →  attach automatically
 2+ running →  show picker
 
-  Multiple txtatelier instances running. Select one:
+  Multiple teich instances running. Select one:
 
     1  ~/notes    (312 files · 4s ago · connected)
     2  ~/journal   (88 files · 1m ago · offline)
@@ -178,7 +178,7 @@ The socket replaces what was previously stdin and stdout. The daemon's existing 
     > _
 ```
 
-Explicit selection skips the picker: `txtatelier attach --watch-dir ~/notes`.
+Explicit selection skips the picker: `teich attach --watch-dir ~/notes`.
 
 **Daemon lifecycle is independent of attach.** Detaching does not stop the daemon. This is explicit in busytown-pi's `session_shutdown` handler: "Don't stop the daemon on exit — it's intentionally independent."
 
@@ -191,8 +191,8 @@ Explicit selection skips the picker: `txtatelier attach --watch-dir ~/notes`.
 ## Other Features a Daemon Makes Possible
 
 **Near-free once the daemon exists:**
-- Tailable structured logs: `txtatelier logs --since 1h --type conflict`
-- On-demand operations without restart: `txtatelier pause`, `txtatelier flush`
+- Tailable structured logs: `teich logs --since 1h --type conflict`
+- On-demand operations without restart: `teich pause`, `teich flush`
 
 **Larger investments:**
 - Notification hooks: user-configurable shell commands on conflict/disconnect/error
@@ -214,7 +214,7 @@ Explicit selection skips the picker: `txtatelier attach --watch-dir ~/notes`.
 | `cleanupGroupAsync` | Yes | Replace ad-hoc teardown in cli.ts and file-sync |
 | `abortableSleep` | Yes | Thread AbortSignal through internal loops |
 | JSON logger driver model | Partially | Absorb into existing `logger.ts`, not a new module |
-| `process-system.ts` | No | txtatelier doesn't manage child processes |
+| `process-system.ts` | No | teich doesn't manage child processes |
 | `store.ts` | No (yet) | Only if reactive dashboard UI is built |
 | `dashboard.ts` | No | Editor-specific, different problem |
 
@@ -223,7 +223,7 @@ Explicit selection skips the picker: `txtatelier attach --watch-dir ~/notes`.
 ## Key Constraints
 
 - **No Bun hardcoding** in daemon spawn. Use `process.execPath` — runtime-agnostic.
-- **Stop is per-instance**, not all. `txtatelier stop --watch-dir ~/journal` stops that one.
+- **Stop is per-instance**, not all. `teich stop --watch-dir ~/journal` stops that one.
 - **Daemon lifecycle is independent of attach.** Detach ≠ stop.
 - **Single logger module.** `logger.ts` adapts output strategy (console vs file) by configuration. No parallel json-logger module.
 - **State file is a public contract.** Schema should be stable enough for future editor integrations (VS Code extension, Neovim plugin) to read directly.
@@ -234,6 +234,6 @@ Explicit selection skips the picker: `txtatelier attach --watch-dir ~/notes`.
 ## Open Questions
 
 - Multiple simultaneous attach clients: allowed or one at a time? busytown-pi doesn't address it.
-- Does `txtatelier` (no args) keep current foreground behavior, or error with "use start/attach"?
+- Does `teich` (no args) keep current foreground behavior, or error with "use start/attach"?
 - Does startup-on-login belong in the binary (generating systemd/launchd units) or left to the user?
 - Can the instance lock (proper-lockfile) be retired in favour of PID file tracking, or do they serve different purposes?

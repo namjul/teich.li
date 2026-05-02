@@ -12,8 +12,8 @@ import {
 } from "@evolu/common";
 import { createDbWorkerForPlatform } from "@evolu/common/local-first";
 import { logger } from "../../logger.ts";
-import { createSqlJsDriver } from "./SqlJsDriver.ts";
 import type { PlatformIO } from "./PlatformIO.ts";
+import { createSqlJsDriver } from "./SqlJsDriver.ts";
 
 export const createEvoluDeps = (io: PlatformIO): EvoluDeps => {
   const sqliteDriverFactory = createSqlJsDriver(io);

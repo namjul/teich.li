@@ -6,4 +6,4 @@ export const isCommandMenuActionMode = (inputValue: string): boolean =>
   inputValue === "?" || inputValue.startsWith("?");
 
 /** Combobox item value for the Open Settings action (must not collide with file ids). */
-export const COMMAND_MENU_OPEN_SETTINGS_VALUE = "__txtatelier_open_settings__";
+export const COMMAND_MENU_OPEN_SETTINGS_VALUE = "__teich_open_settings__";

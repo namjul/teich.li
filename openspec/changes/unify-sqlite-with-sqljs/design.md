@@ -79,7 +79,7 @@ Proposed (Option B - Eliminate Factory):
   - sql.js uses `db.getRowsModified()` vs `result.changes`
   - No prepared statement objects returned for queries
 - **Worker context**: sql.js works in Web Workers (Evolu's architecture) without native addon issues
-- **Logger integration**: Use txtatelier's structured logger instead of console.error — maintain observability
+- **Logger integration**: Use teich's structured logger instead of console.error — maintain observability
 
 ## Rationale
 

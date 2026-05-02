@@ -2,7 +2,7 @@
 
 **Status:** Active  
 **Created:** 2026-04-01  
-**Package:** `@txtatelier/sync-invariants`
+**Package:** `@teich/sync-invariants`
 
 ---
 
@@ -27,7 +27,7 @@ Shared rules prevent CLI state materialization and the PWA editor from **divergi
 
 **Contact test**
 
-- **Success-if:** One implementation of `detectConflict` + `classifyRemoteChange`; PWA and CLI both depend on `@txtatelier/sync-invariants`.
+- **Success-if:** One implementation of `detectConflict` + `classifyRemoteChange`; PWA and CLI both depend on `@teich/sync-invariants`.
 - **Failure-if:** Duplicate invariant logic or UI/FSM calling `detectConflict` without going through classification (except tests / documented bridge).
 
 ### Current strength
@@ -46,4 +46,4 @@ Strengthening — pure core extracted from CLI `file-sync`.
 
 ### 2026-04-01 — Rename to `sync-invariants`
 
-**Package / folder:** `@txtatelier/sync-invariants`, `centers/sync-invariants` — name reflects normative invariants rather than “contract” metaphor.
+**Package / folder:** `@teich/sync-invariants`, `centers/sync-invariants` — name reflects normative invariants rather than “contract” metaphor.

@@ -14,7 +14,7 @@ export const useFileEditorMachine = (props: {
   readonly maxRetries?: number;
 }) =>
   useMachine(fileEditorMachine, () => ({
-    id: "txtatelier-file-editor",
+    id: "teich-file-editor",
     getRootNode: () => document,
     debounceMs: props.debounceMs ?? 300,
     maxRetries: props.maxRetries ?? 3,

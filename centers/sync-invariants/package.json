@@ -1,5 +1,5 @@
 {
-  "name": "@txtatelier/sync-invariants",
+  "name": "@teich/sync-invariants",
   "version": "0.0.0",
   "description": "Normative sync invariants: 3-way conflict detection, remote-change classification, shared by CLI + PWA",
   "private": true,

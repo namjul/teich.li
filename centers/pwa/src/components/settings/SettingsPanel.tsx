@@ -29,7 +29,7 @@ import type { StatusOps, StatusState } from "../editor/types";
 const useEvolu = createUseEvolu(evolu);
 
 /** Stable row id for the single local `_settings` inbox path preference */
-const inboxSettingsRowId = createIdFromString("txtatelier-pwa-inbox-path");
+const inboxSettingsRowId = createIdFromString("teich-pwa-inbox-path");
 
 const buildInfoSha = (): string => {
   return (
@@ -187,7 +187,7 @@ export const SettingsPanel = (props: {
     const url = window.URL.createObjectURL(blob);
     const anchor = document.createElement("a");
     anchor.href = url;
-    anchor.download = "txtatelier-pwa.sqlite3";
+    anchor.download = "teich-pwa.sqlite3";
     anchor.click();
     window.URL.revokeObjectURL(url);
     props.statusOps.setLastAction("backup exported");
@@ -341,18 +341,18 @@ export const SettingsPanel = (props: {
           </p>
           <p class="text-black/65 dark:text-white/65">
             On Android, install the app to your home screen (Chrome menu →
-            Install app or Add to Home screen) so TXTAtelier appears in the
+            Install app or Add to Home screen) so Teich.li appears in the
             system Share sheet.
           </p>
           <div class="w-full space-y-2">
             <label
               class="block text-xs text-black/65 dark:text-white/65"
-              for="txtatelier-inbox-path"
+              for="teich-inbox-path"
             >
               inbox path
             </label>
             <input
-              id="txtatelier-inbox-path"
+              id="teich-inbox-path"
               type="text"
               class="w-full rounded-none border border-black/25 bg-transparent px-2.5 py-2 font-mono text-xs outline-none focus:border-black dark:border-white/25 dark:focus:border-white"
               placeholder={DEFAULT_INBOX_PATH}

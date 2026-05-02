@@ -3,7 +3,7 @@
 ## What behavior is being added?
 
 **Configuration file loading:**
-- CLI reads configuration from `txtatelier.config.json` file on startup
+- CLI reads configuration from `teich.config.json` file on startup
 - Config file location searched in order: current directory, home directory, XDG config directory
 - Users can specify custom config path with `--config` CLI flag
 - Config validation happens before sync loops start - invalid config prevents startup

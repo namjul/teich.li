@@ -6,11 +6,11 @@ import {
 } from "@evolu/common";
 import { deriveShardOwner } from "@evolu/common/local-first";
 import { evoluWebDeps } from "@evolu/web";
-import { FILES_SHARD } from "@txtatelier/sync-invariants";
+import { FILES_SHARD } from "@teich/sync-invariants";
 import { env } from "../env";
 import { Schema } from "./schema";
 
-export type TxtatelierEvolu = Evolu<typeof Schema>;
+export type TeichEvolu = Evolu<typeof Schema>;
 
 /**
  * Options for `file` table mutations. Matches CLI `filesOwnerId`
@@ -18,7 +18,7 @@ export type TxtatelierEvolu = Evolu<typeof Schema>;
  * same shard as CLI-created rows.
  */
 export const getFilesShardMutationOptions = async (
-  client: TxtatelierEvolu,
+  client: TeichEvolu,
 ): Promise<{ readonly ownerId: OwnerId }> => {
   const owner = await client.appOwner;
   return { ownerId: deriveShardOwner(owner, FILES_SHARD).id };
@@ -26,12 +26,10 @@ export const getFilesShardMutationOptions = async (
 
 export const defaultRelayUrl = "wss://free.evoluhq.com";
 
-export const createEvoluClient = (
-  transportUrl?: string,
-): TxtatelierEvolu => {
+export const createEvoluClient = (transportUrl?: string): TeichEvolu => {
   const trimmedTransportUrl = transportUrl?.trim() || defaultRelayUrl;
   const evolu = createEvolu(evoluWebDeps)(Schema, {
-    name: SimpleName.orThrow("txtatelier"),
+    name: SimpleName.orThrow("teich"),
     transports: trimmedTransportUrl
       ? [{ type: "WebSocket" as const, url: trimmedTransportUrl }]
       : [],

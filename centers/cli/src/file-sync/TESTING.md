@@ -1,4 +1,4 @@
-# Testing Guide for txtatelier
+# Testing Guide for teich
 
 ## Manual Testing Steps for Custom Evolu Platform Layer
 
@@ -6,7 +6,7 @@
 
 ```bash
 # Ensure you're in the project root
-cd /home/hobl/code/proj/txtatelier
+cd /home/hobl/code/proj/teich
 
 # Install dependencies (if not done already)
 bun install
@@ -22,7 +22,7 @@ bun install
 
 ```bash
 # 1. Clean slate - remove any existing database
-rm -rf ~/.txtatelier
+rm -rf ~/.teich
 
 # 2. Run the CLI
 bun run --cwd centers/cli start
@@ -30,7 +30,7 @@ bun run --cwd centers/cli start
 
 **Expected output:**
 ```
-[txtatelier] Starting...
+[teich] Starting...
 [file-sync] Initializing...
 [file-sync]
 [file-sync] First run detected!
@@ -40,11 +40,11 @@ bun run --cwd centers/cli start
 [file-sync]
 [file-sync] ⚠️  IMPORTANT: Save this mnemonic!
 [file-sync] ⚠️  You'll need it to access your data on other devices.
-[file-sync] ⚠️  Run 'txtatelier show-mnemonic' to see it again.
+[file-sync] ⚠️  Run 'teich show-mnemonic' to see it again.
 [file-sync]
 [file-sync] Owner ID: <some ID>
 [file-sync] Ready
-[txtatelier] Running (press Ctrl+C to stop)
+[teich] Running (press Ctrl+C to stop)
 ```
 
 **Verification:**
@@ -60,7 +60,7 @@ bun run --cwd centers/cli start
 
 **Expected shutdown:**
 ```
-[txtatelier] Received SIGINT, shutting down gracefully...
+[teich] Received SIGINT, shutting down gracefully...
 [file-sync] Shutting down...
 [file-sync] Stopped
 ```
@@ -75,24 +75,24 @@ bun run --cwd centers/cli start
 
 ```bash
 # Check that the database file exists
-ls -lh ~/.txtatelier/
+ls -lh ~/.teich/
 
 # Check the file is a valid SQLite database
-file ~/.txtatelier/txtatelier.db
+file ~/.teich/teich.db
 ```
 
 **Expected output:**
 ```bash
 # ls output:
 total 56K
--rw-rw-r-- 1 user user 56K <date> txtatelier.db
+-rw-rw-r-- 1 user user 56K <date> teich.db
 
 # file output:
-/home/user/.txtatelier/txtatelier.db: SQLite 3.x database, last written using SQLite version 3046000, file counter 2, database pages 14, cookie 0x1, schema 4, UTF-8, version-valid-for 2
+/home/user/.teich/teich.db: SQLite 3.x database, last written using SQLite version 3046000, file counter 2, database pages 14, cookie 0x1, schema 4, UTF-8, version-valid-for 2
 ```
 
 **Verification:**
-- ✅ File exists at `~/.txtatelier/txtatelier.db`
+- ✅ File exists at `~/.teich/teich.db`
 - ✅ File is a valid SQLite database
 - ✅ File size is reasonable (around 50-60KB)
 
@@ -111,11 +111,11 @@ bun run --cwd centers/cli start
 
 **Expected output:**
 ```
-[txtatelier] Starting...
+[teich] Starting...
 [file-sync] Initializing...
 [file-sync] Owner ID: <same ID as Test 1>
 [file-sync] Ready
-[txtatelier] Running (press Ctrl+C to stop)
+[teich] Running (press Ctrl+C to stop)
 ```
 
 **Verification:**
@@ -184,7 +184,7 @@ Checked 12 files in <X>ms. No fixes applied.
 # sudo apt install sqlite3
 
 # Open the database
-sqlite3 ~/.txtatelier/txtatelier.db
+sqlite3 ~/.teich/teich.db
 
 # In the SQLite prompt:
 .tables
@@ -243,7 +243,7 @@ bun run --cwd centers/cli start
 
 **Expected output:**
 ```
-[txtatelier] Received SIGINT, shutting down gracefully...
+[teich] Received SIGINT, shutting down gracefully...
 [file-sync] Shutting down...
 [file-sync] Stopped
 ```
@@ -272,7 +272,7 @@ bun run --cwd centers/cli start
 bun run --cwd centers/cli start &
 
 # 2. Check for WAL files
-ls -la ~/.txtatelier/
+ls -la ~/.teich/
 
 # 3. Stop the CLI
 kill %1
@@ -280,16 +280,16 @@ kill %1
 
 **Expected files:**
 ```
-txtatelier.db       # Main database
-txtatelier.db-wal   # Write-Ahead Log file (may appear)
-txtatelier.db-shm   # Shared memory file (may appear)
+teich.db       # Main database
+teich.db-wal   # Write-Ahead Log file (may appear)
+teich.db-shm   # Shared memory file (may appear)
 ```
 
 **Note:** WAL files may not always be visible depending on timing and whether there are pending writes.
 
 **Alternative verification - query the database:**
 ```bash
-sqlite3 ~/.txtatelier/txtatelier.db "PRAGMA journal_mode;"
+sqlite3 ~/.teich/teich.db "PRAGMA journal_mode;"
 ```
 
 **Expected output:**
@@ -328,21 +328,21 @@ end
 **Expected output:**
 ```
 Run 1
-[txtatelier] Starting...
+[teich] Starting...
 [file-sync] Initializing...
 [file-sync] Owner ID: <ID>
 [file-sync] Ready
 ...
 
 Run 2
-[txtatelier] Starting...
+[teich] Starting...
 [file-sync] Initializing...
 [file-sync] Owner ID: <same ID>
 [file-sync] Ready
 ...
 
 Run 3
-[txtatelier] Starting...
+[teich] Starting...
 [file-sync] Initializing...
 [file-sync] Owner ID: <same ID>
 [file-sync] Ready
@@ -365,10 +365,10 @@ Run 3
 
 ```bash
 # 1. Remove database
-rm -rf ~/.txtatelier
+rm -rf ~/.teich
 
 # 2. Verify removal
-ls ~/.txtatelier
+ls ~/.teich
 # Should show: "No such file or directory"
 
 # 3. Run CLI
@@ -398,7 +398,7 @@ bun run --cwd centers/cli start
 - ✅ No linting/formatting issues
 - ✅ First run shows mnemonic (24 words)
 - ✅ Subsequent runs use same Owner ID
-- ✅ Database file created at `~/.txtatelier/txtatelier.db`
+- ✅ Database file created at `~/.teich/teich.db`
 - ✅ Graceful shutdown works (no data loss)
 - ✅ WAL mode enabled
 - ✅ SQLite database valid and queryable
@@ -422,7 +422,7 @@ ps aux | grep bun
 killall bun
 
 # Remove lock files
-rm ~/.txtatelier/txtatelier.db-wal ~/.txtatelier/txtatelier.db-shm
+rm ~/.teich/teich.db-wal ~/.teich/teich.db-shm
 ```
 
 ### Issue: TypeScript errors after changes
@@ -445,13 +445,13 @@ bun run typecheck
 **Solution:**
 ```bash
 # Check database file exists
-ls -lh ~/.txtatelier/txtatelier.db
+ls -lh ~/.teich/teich.db
 
 # Check file permissions
-chmod 644 ~/.txtatelier/txtatelier.db
+chmod 644 ~/.teich/teich.db
 
 # Check directory permissions
-chmod 755 ~/.txtatelier
+chmod 755 ~/.teich
 ```
 
 ### Issue: Mnemonic shown every time
@@ -461,7 +461,7 @@ chmod 755 ~/.txtatelier
 **Solution:**
 ```bash
 # Verify database file exists before starting
-ls ~/.txtatelier/txtatelier.db
+ls ~/.teich/teich.db
 
 # If file doesn't exist, the detection is working correctly
 # If file exists but mnemonic shows, check the isFirstRun logic
@@ -545,20 +545,20 @@ If you want to manually test change capture:
 
 ```bash
 # 1. Clean state
-rm -rf ~/.txtatelier/txtatelier.db ~/.txtatelier/watched/*
+rm -rf ~/.teich/teich.db ~/.teich/watched/*
 
 # 2. Start CLI
 bun run --cwd centers/cli start
 
 # 3. In another terminal, create/modify files
-echo "test content" > ~/.txtatelier/watched/test.txt
-echo "updated content" > ~/.txtatelier/watched/test.txt
-echo "same content" > ~/.txtatelier/watched/test.txt
+echo "test content" > ~/.teich/watched/test.txt
+echo "updated content" > ~/.teich/watched/test.txt
+echo "same content" > ~/.teich/watched/test.txt
 
 # 4. Verify in logs (should see: Insert, Update, No change)
 
 # 5. Check database
-sqlite3 ~/.txtatelier/txtatelier.db "SELECT path, content, contentHash FROM file;"
+sqlite3 ~/.teich/teich.db "SELECT path, content, contentHash FROM file;"
 ```
 
 **Expected log output:**

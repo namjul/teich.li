@@ -4,7 +4,7 @@ import { VitePWA } from "vite-plugin-pwa";
 import solidPlugin from "vite-plugin-solid";
 
 // biome-ignore lint/complexity/useLiteralKeys: process.env is typed via index signature; dot access triggers TS4111.
-const basePath = process.env["VITE_TXTATELIER_BASE_PATH"] ?? "/";
+const basePath = process.env["VITE_TEICH_BASE_PATH"] ?? "/";
 
 const shareTargetActionPath = (): string => {
   const normalized = basePath === "/" ? "" : basePath.replace(/\/?$/, "");
@@ -33,8 +33,8 @@ export default defineConfig({
       srcDir: "src",
       filename: "sw.ts",
       manifest: {
-        name: "TXTAtelier",
-        short_name: "TXTAtelier",
+        name: "teich.li",
+        short_name: "Teich",
         description:
           "Local-first file sync with Evolu — edit notes in the browser with offline-capable PWA support.",
         theme_color: "#0f172a",

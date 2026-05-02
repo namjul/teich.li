@@ -24,7 +24,7 @@
 
 - [ ] 5.1 Implement socket server in daemon process — listens on `socketPath`, maintains a `Set` of active connections for shutdown cleanup; on new connection read newline-delimited JSON commands, execute via `handleCommand` (with mutex serialization), write `{ ok, output }` JSON response; on connection close remove from set
 - [ ] 5.2 Implement `handleCommand` in daemon — switch on `DaemonCommand.type`, call the corresponding session method (which returns `Promise<string>`), return `{ ok: true, output }` or `{ ok: false, output: error.message }` on throw; unknown type returns `{ ok: false, output: "Unknown command: ..." }`; `handleCommand` must never throw — if it does, the mutex promise chain breaks and all subsequent commands deadlock
-- [ ] 5.3 Implement socket client for `attach` command (`attach-client.ts`) — reads state file for socket path and PID, prints welcome header (`printStartupBanner` + `➜  Attached: <watchDir> (pid <pid>)`), creates readline against process.stdin/stdout, calls `bindShortcuts` with `isInteractive: true`; on shortcut: sends JSON command, awaits JSON response; if `response.ok` is `true` prints `response.output` to stdout, if `false` prints `response.output` to stderr; intercepts `q` + Enter and SIGINT client-side (close connection, exit 0); on `c` clears local terminal; on unexpected socket close prints `[txtatelier] daemon disconnected` and exits non-zero
+- [ ] 5.3 Implement socket client for `attach` command (`attach-client.ts`) — reads state file for socket path and PID, prints welcome header (`printStartupBanner` + `➜  Attached: <watchDir> (pid <pid>)`), creates readline against process.stdin/stdout, calls `bindShortcuts` with `isInteractive: true`; on shortcut: sends JSON command, awaits JSON response; if `response.ok` is `true` prints `response.output` to stdout, if `false` prints `response.output` to stderr; intercepts `q` + Enter and SIGINT client-side (close connection, exit 0); on `c` clears local terminal; on unexpected socket close prints `[teich] daemon disconnected` and exits non-zero
 
 ## 6. Instance Lock Replacement
 
@@ -33,12 +33,12 @@
 
 ## 7. CLI Subcommands
 
-- [ ] 7.1 Update `txtatelier start`: when `--log` is absent, spawn daemon via `spawnDaemon` and exit; when `--log` is present, apply stdout/stderr redirect (task 3.1) and run the sync loop directly
+- [ ] 7.1 Update `teich start`: when `--log` is absent, spawn daemon via `spawnDaemon` and exit; when `--log` is present, apply stdout/stderr redirect (task 3.1) and run the sync loop directly
 - [ ] 7.2 Add `--log` argument to `startCommand` in `cli.ts` with a plain description (shown in help)
 - [ ] 7.3 Adopt `cleanupGroupAsync` in `cli.ts` to consolidate signal handler teardown; state file removal registered first so it runs last
-- [ ] 7.4 Add `txtatelier stop [--watch-dir]` subcommand using `stopDaemon`
-- [ ] 7.5 Add `txtatelier ps` subcommand — calls `getAllDaemonStates`, formats each running instance as two lines: `● <watchDir> (pid <pid>, last seen <Xs> ago)` followed by `  log: <logPath>`; prints `No txtatelier instances running.` when none found
-- [ ] 7.6 Add `txtatelier attach [--watch-dir]` subcommand using socket client
-- [ ] 7.7 Remove `default: "start"` from main command so `txtatelier` with no args shows help (BREAKING)
+- [ ] 7.4 Add `teich stop [--watch-dir]` subcommand using `stopDaemon`
+- [ ] 7.5 Add `teich ps` subcommand — calls `getAllDaemonStates`, formats each running instance as two lines: `● <watchDir> (pid <pid>, last seen <Xs> ago)` followed by `  log: <logPath>`; prints `No teich instances running.` when none found
+- [ ] 7.6 Add `teich attach [--watch-dir]` subcommand using socket client
+- [ ] 7.7 Remove `default: "start"` from main command so `teich` with no args shows help (BREAKING)
 - [ ] 7.8 In `shortcuts.ts`: replace `SessionDep` with `ShortcutCommands` interface (narrow async callbacks: `showStatus`, `showMnemonic`, `restoreMnemonic`, `resetOwner`, `clearScreen`, `quit`); update `bindShortcuts` to call each callback and print its return string via `deps.logger.info`; for the `p` shortcut, defer the `readline.question` call via `setImmediate` before invoking it (Node readline re-entrancy: calling `readline.question` directly inside a `line` event handler consumes the next input line as the answer), then collect the mnemonic and apply `normalizeMnemonicInput` before passing it to `deps.restoreMnemonic`; rename `isTTY` to `isInteractive` on `TTYDep`; remove clipboard fallback from `readMnemonicLine`; remove `clipboardy` import and dependency
 - [ ] 7.9 In `file-sync/index.ts`: refactor `showStatus`, `showMnemonic`, `resetOwner` to return `Promise<string>` instead of writing to logger; change `restoreMnemonic` signature to `(mnemonic: string) => Promise<string>`; remove `session.quit()`

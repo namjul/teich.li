@@ -35,9 +35,9 @@ export const SettingsDialog = (props: {
       <Dialog.Positioner class="fixed inset-0 z-[70] flex overflow-y-auto">
         <Dialog.Content
           class="flex min-h-full w-full flex-col bg-[#f2f1ee] font-mono text-[#111111] dark:bg-[#151617] dark:text-[#efefef]"
-          aria-labelledby="txtatelier-settings-title"
+          aria-labelledby="teich-settings-title"
         >
-          <Dialog.Title id="txtatelier-settings-title" class="sr-only">
+          <Dialog.Title id="teich-settings-title" class="sr-only">
             Settings
           </Dialog.Title>
           <Dialog.Description class="sr-only">

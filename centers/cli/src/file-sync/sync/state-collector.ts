@@ -13,7 +13,10 @@ import { createFielsFromPathQuery } from "../evolu-queries.ts";
 import type { Schema } from "../evolu-schema.ts";
 import { computeFileHash } from "../hash.ts";
 import { getTrackedHash } from "../state.ts";
-import type { ChangeCaptureState, MaterializationState } from "./state-types.ts";
+import type {
+  ChangeCaptureState,
+  MaterializationState,
+} from "./state-types.ts";
 
 type EvoluDatabase = Evolu<typeof Schema>;
 

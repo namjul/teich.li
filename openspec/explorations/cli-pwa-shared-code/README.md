@@ -13,8 +13,8 @@
 | Element | CLI Location | PWA Location | Risk if Diverged |
 |---------|-------------|--------------|------------------|
 | `file` table schema | `file-sync/evolu-schema.ts:22-38` | `evolu/schema.ts:12-18` | Sync breaks |
-| Content hashing | `@txtatelier/sync-invariants` (CLI: `file-sync/hash.ts` adds `computeFileHash`) | `@txtatelier/sync-invariants` (PWA may re-export via `evolu/contentHash.ts`) | Infinite sync loops |
-| Files shard owner | `@txtatelier/sync-invariants` `FILES_SHARD` (CLI: `evolu.ts`, `index.ts`) | same + `evolu/client.ts` | Rows invisible to other side |
+| Content hashing | `@teich/sync-invariants` (CLI: `file-sync/hash.ts` adds `computeFileHash`) | `@teich/sync-invariants` (PWA may re-export via `evolu/contentHash.ts`) | Infinite sync loops |
+| Files shard owner | `@teich/sync-invariants` `FILES_SHARD` (CLI: `evolu.ts`, `index.ts`) | same + `evolu/client.ts` | Rows invisible to other side |
 | Default relay URL | AGENTS.md | `evolu/client.ts:26` | Connection failures |
 
 All use **SHA-256 hex** (64 chars) over UTF-8 content. This is the primary cross-surface invariant.
@@ -53,7 +53,7 @@ Trigger signals:
 ├── First "drift bug" occurs
 │   └── Pain of duplication > pain of abstraction
 ├── Schema needs versioning
-│   └── @txtatelier/common-evolu@1.0.0 vs @2.0.0
+│   └── @teich/common-evolu@1.0.0 vs @2.0.0
 └── Testing becomes painful
     └── "Did we break PWA or CLI or both?"
 ```
@@ -63,7 +63,7 @@ Trigger signals:
 Obvious candidates (in priority order):
 
 1. **Schema contract** — `FileId`, file table shape as minimal module
-2. **Shard constant** — implemented as `FILES_SHARD` in `@txtatelier/sync-invariants`
+2. **Shard constant** — implemented as `FILES_SHARD` in `@teich/sync-invariants`
 3. **Hash contract** — Test vectors or algorithm spec (not implementation)
 4. **Query helpers** — Only if patterns truly stabilize
 

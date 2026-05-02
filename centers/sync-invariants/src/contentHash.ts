@@ -3,7 +3,7 @@
  * String content uses **UTF-8** (`TextEncoder`), matching Node `createHash("sha256").update(string)`.
  *
  * Implemented with **Web Crypto** (`globalThis.crypto.subtle`) — browsers and **Node 19+**
- * (txtatelier CLI targets Node ≥22).
+ * (teich CLI targets Node ≥22).
  */
 
 const bytesToHex = (bytes: Uint8Array): string => {
@@ -16,10 +16,7 @@ const bytesToHex = (bytes: Uint8Array): string => {
  * SHA-256 hex digest of raw bytes.
  */
 export const computeHash = async (bytes: Uint8Array): Promise<string> => {
-  const digest = await crypto.subtle.digest(
-    "SHA-256",
-    new Uint8Array(bytes),
-  );
+  const digest = await crypto.subtle.digest("SHA-256", new Uint8Array(bytes));
   return bytesToHex(new Uint8Array(digest));
 };
 

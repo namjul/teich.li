@@ -19,10 +19,10 @@ Implements bidirectional sync between filesystem and Evolu CRDT database.
   - PlatformIO abstraction for file I/O
   - Schema definition for file records
   - Mnemonic management (auto-generated, persisted by Evolu)
-  - Mnemonic restore via TXTATELIER_MNEMONIC env var
+  - Mnemonic restore via TEICH_MNEMONIC env var
   - Filesystem watching (Node.js fs.watch, debounced 100ms)
-  - Content hashing: string/byte SHA-256 hex from `@txtatelier/sync-invariants`; `hash.ts` adds `computeFileHash` (read file → `computeHash`)
-  - Files shard: `FILES_SHARD` from `@txtatelier/sync-invariants` for `deriveShardOwner` (same path as PWA)
+  - Content hashing: string/byte SHA-256 hex from `@teich/sync-invariants`; `hash.ts` adds `computeFileHash` (read file → `computeHash`)
+  - Files shard: `FILES_SHARD` from `@teich/sync-invariants` for `deriveShardOwner` (same path as PWA)
   - Evolu mutation logic (insert new files, update changed files, skip unchanged)
   - Concurrency control (max 10 parallel file operations)
 
@@ -57,7 +57,7 @@ The file-sync center will organize the core synchronization logic from filesyste
 
 **This center:**
 - Watches filesystem for changes (debounced, 50-200ms)
-- Computes content hashes (SHA-256 hex via `@txtatelier/sync-invariants`; disk via `computeFileHash`)
+- Computes content hashes (SHA-256 hex via `@teich/sync-invariants`; disk via `computeFileHash`)
 - Updates Evolu rows when hash differs from stored value
 - Respects "filesystem is canonical" principle
 
@@ -71,7 +71,7 @@ Strong - Bidirectional sync complete, organizing power fully demonstrated
 
 **Evidence:**
 - Custom Evolu platform successfully integrated
-- SQLite database persists to `~/.txtatelier/txtatelier.db`
+- SQLite database persists to `~/.teich/teich.db`
 - Local-only `_syncState` table working (Evolu's underscore convention)
 - Mnemonic generation and owner management working
 - Graceful shutdown with debounced persistence (prevents data loss)
@@ -96,7 +96,7 @@ Strong - Bidirectional sync complete, organizing power fully demonstrated
 
 **Claim:** `computeFileHash` / `computeContentHash` must use the same algorithm and hex encoding as the PWA.
 
-**Changes:** `hash.ts` re-exports `computeContentHash` / `computeHash` from `@txtatelier/sync-invariants` and implements `computeFileHash` only (disk bytes → hash).
+**Changes:** `hash.ts` re-exports `computeContentHash` / `computeHash` from `@teich/sync-invariants` and implements `computeFileHash` only (disk bytes → hash).
 
 **Contact test:** Success-if: `bun test` in `centers/cli` (same pass/skip profile as before this change). Failure-if: hash mismatch loops or regressions in Change Capture.
 
@@ -159,7 +159,7 @@ Strong - Bidirectional sync complete, organizing power fully demonstrated
 
 **Design decisions:**
 - **No mnemonic backup file** - Evolu persists owner internally, user responsible for saving mnemonic
-- **Database location:** `~/.txtatelier/txtatelier.db` (standard for CLI tools)
+- **Database location:** `~/.teich/teich.db` (standard for CLI tools)
 - **No sync transport** - Phase 0 is single-device only (`transports: []`)
 - **Schema:** Path max 1000 chars, content nullable, hash as NonEmptyString100
 
@@ -180,7 +180,7 @@ Strong - Bidirectional sync complete, organizing power fully demonstrated
 **Claim:** Change Capture with 100ms debounce, SHA-256 hashing, and Node.js fs.watch will provide reliable single-device sync without excessive CPU usage
 
 **Changes:**
-- Created `hash.ts` - Content hashing: re-exports `@txtatelier/sync-invariants`; `computeFileHash(filePath)` reads disk bytes
+- Created `hash.ts` - Content hashing: re-exports `@teich/sync-invariants`; `computeFileHash(filePath)` reads disk bytes
 - Created `watch.ts` - Filesystem watching with debounce
   - Uses Node.js `fs.watch()` with recursive option (more stable than Bun.watch)
   - 100ms debounce per file path (balances responsiveness and stability)
@@ -193,12 +193,12 @@ Strong - Bidirectional sync complete, organizing power fully demonstrated
   - Inserts new record or updates if hash changed
   - Skips update if hash matches (avoids unnecessary mutations)
 - Updated `index.ts` - Wire Change Capture into CLI lifecycle
-  - Defines `WATCH_DIR` constant (`~/.txtatelier/watched`)
+  - Defines `WATCH_DIR` constant (`~/.teich/watched`)
   - Starts watching on startup, stops on shutdown
   - Passes `syncFileToEvolu` callback to watcher
 
 **Design decisions:**
-- **Hash algorithm:** SHA-256 hex from `@txtatelier/sync-invariants` (must match PWA `file.contentHash` or Evolu↔disk↔watch loops)
+- **Hash algorithm:** SHA-256 hex from `@teich/sync-invariants` (must match PWA `file.contentHash` or Evolu↔disk↔watch loops)
 - **Debounce:** 100ms (balances instant feedback with stability)
 - **Watch API:** Node.js fs.watch() (more stable than Bun.watch for now)
 - **Initial scan:** None - only watch changes (Phase 5 will add startup reconciliation)
@@ -353,10 +353,10 @@ Strong - Bidirectional sync complete, organizing power fully demonstrated
 
 **Aim:** Enable device provisioning with existing mnemonic and improve relay observability
 
-**Claim:** TXTATELIER_MNEMONIC env var with two-stage restore flow will enable restoring an owner from another device's mnemonic
+**Claim:** TEICH_MNEMONIC env var with two-stage restore flow will enable restoring an owner from another device's mnemonic
 
 **Changes:**
-- Added `TXTATELIER_MNEMONIC` env var support in index.ts
+- Added `TEICH_MNEMONIC` env var support in index.ts
 - Implemented two-stage restore flow:
   - Stage 1: Restore mnemonic (exits after persisting because Evolu's reload mechanism is browser-native)
   - Stage 2: Start CLI with restored owner
@@ -490,7 +490,7 @@ const results = await executePlan(evolu, watchDir, actions);
 - `sync/actions.ts` - Action type definitions
 - `sync/state-types.ts` - State structure definitions
 - `sync/change-capture-plan.ts` - Planning for Filesystem → Evolu
-- `sync/state-materialization-plan.ts` - Planning for Evolu → Filesystem (uses `@txtatelier/sync-invariants` `classifyRemoteChange`)
+- `sync/state-materialization-plan.ts` - Planning for Evolu → Filesystem (uses `@teich/sync-invariants` `classifyRemoteChange`)
 - `sync/state-collector.ts` - I/O for gathering state
 - `sync/executor.ts` - I/O for executing actions
 - `sync/*.test.ts` - Fast unit tests (no I/O)

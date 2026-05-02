@@ -79,7 +79,7 @@
 
 ### 7. Documentation
 
-- [ ] 7.1 Create example `txtatelier.config.json` file with all fields and comments (as separate doc)
+- [ ] 7.1 Create example `teich.config.json` file with all fields and comments (as separate doc)
 - [ ] 7.2 Document config schema in README or docs: field names, types, defaults, validation rules
 - [ ] 7.3 Document config file search order
 - [ ] 7.4 Add troubleshooting section for common config errors

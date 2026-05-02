@@ -56,8 +56,8 @@ changes with the Evolu version.
 
 1. Start the CLI and let it sync a file:
    ```sh
-   bun run src/index.ts sync --watch-dir /tmp/test-txtatelier
-   echo "original content" > /tmp/test-txtatelier/note.txt
+   bun run src/index.ts sync --watch-dir /tmp/test-teich
+   echo "original content" > /tmp/test-teich/note.txt
    # wait ~2s for the file to sync into Evolu
    ```
 
@@ -69,12 +69,12 @@ changes with the Evolu version.
 
 3. Modify the file while the CLI is offline:
    ```sh
-   echo "my offline edit" > /tmp/test-txtatelier/note.txt
+   echo "my offline edit" > /tmp/test-teich/note.txt
    ```
 
 4. Restart the CLI:
    ```sh
-   bun run src/index.ts sync --watch-dir /tmp/test-txtatelier
+   bun run src/index.ts sync --watch-dir /tmp/test-teich
    ```
 
 5. Check the file — if the bug is present, `note.txt` will revert to `"original content"`.

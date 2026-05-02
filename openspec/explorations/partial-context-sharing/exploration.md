@@ -45,7 +45,7 @@ Evolu's docs explicitly state:
 > a problem if we want to provide real data deletion... AppOwner must be preserved because it
 > coordinates deletion information across devices."
 
-**Currently, txtatelier stores all files in AppOwner. This is what the docs say not to do.**
+**Currently, teich stores all files in AppOwner. This is what the docs say not to do.**
 
 The recommended pattern: use `deriveShardOwner` for content data.
 

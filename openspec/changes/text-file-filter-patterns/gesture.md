@@ -126,7 +126,7 @@ const extensionSet = new Set(extensions.map(e => e.toLowerCase()));
 **Environment variable support:**
 ```typescript
 // In env.ts
-TXTATELIER_TEXT_EXTENSIONS: ".txt,.md,.rst"
+TEICH_TEXT_EXTENSIONS: ".txt,.md,.rst"
 ```
 
 **Benefits:**

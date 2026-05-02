@@ -46,7 +46,7 @@ export const FileEditor = (props: {
       <div class="min-h-0 min-w-0 flex-1 flex">
         <textarea
           ref={ta.textareaRef}
-          id="txtatelier-editor"
+          id="teich-editor"
           aria-label="File content"
           class="box-border flex-1 min-h-0 w-full resize-none border-0 bg-transparent p-0 font-mono text-sm leading-relaxed outline-none focus:ring-0 md:text-xs md:leading-5"
           value={props.draft}
