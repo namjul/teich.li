@@ -19,14 +19,31 @@ export const createEvoluDeps = (io: PlatformIO): EvoluDeps => {
   const sqliteDriverFactory = createSqlJsDriver(io);
 
   const createLoggedWebSocket: CreateWebSocket = (url, options) => {
+    let offlineSince: number | null = null;
+
     const ws = createWebSocket(url, {
       ...options,
       onOpen: () => {
-        logger.debug("[net:websocket:open]", url);
+        if (offlineSince !== null) {
+          const secs = Math.round((Date.now() - offlineSince) / 1000);
+          logger.info("[net:websocket:reconnected]", url, `after ${secs}s`);
+          offlineSince = null;
+        } else {
+          logger.debug("[net:websocket:open]", url);
+        }
         options?.onOpen?.();
       },
       onError: (error) => {
-        logger.error("[net:websocket:error]", error);
+        if (error.type === "WebSocketConnectError") {
+          if (offlineSince === null) {
+            offlineSince = Date.now();
+            logger.warn("[net:websocket:offline]", url);
+          } else {
+            logger.debug("[net:websocket:retry]", url);
+          }
+        } else {
+          logger.error("[net:websocket:error]", error);
+        }
         options?.onError?.(error);
       },
       onClose: (event) => {
