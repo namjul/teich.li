@@ -9,6 +9,7 @@ import {
   createTime,
   createWebSocket,
   type EvoluDeps,
+  PositiveInt,
 } from "@evolu/common";
 import { createDbWorkerForPlatform } from "@evolu/common/local-first";
 import { logger } from "../../logger.ts";
@@ -38,13 +39,22 @@ export const createEvoluDeps = (io: PlatformIO): EvoluDeps => {
           if (offlineSince === null) {
             offlineSince = Date.now();
             logger.warn("[net:websocket:offline]", url);
-          } else {
-            logger.debug("[net:websocket:retry]", url);
           }
         } else {
           logger.error("[net:websocket:error]", error);
         }
         options?.onError?.(error);
+      },
+      retryOptions: {
+        retries: PositiveInt.orThrow(Number.MAX_SAFE_INTEGER),
+        onRetry: (error, attempt, delay) => {
+          logger.debug(
+            "[net:websocket:retry]",
+            url,
+            `attempt ${attempt}, retrying in ${Math.round(delay / 1000)}s`,
+          );
+          options?.retryOptions?.onRetry?.(error, attempt, delay);
+        },
       },
       onClose: (event) => {
         logger.debug("[net:websocket:close]", event.code, event.reason);
