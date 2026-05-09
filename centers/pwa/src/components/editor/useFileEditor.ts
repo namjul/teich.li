@@ -221,8 +221,10 @@ export const useFileEditor = (
           status.setError("conflict detected");
         }
         session.send({ type: "ROW_TRUE_DIVERGENCE" });
+        return;
       }
-      return;
+      // Not dirty: stale draftHash during clean-sync window caused a false
+      // positive. Fall through to adopt the remote content normally.
     }
 
     // Full convergence: remote === disk (per CONFLICT_RULES.md §5)

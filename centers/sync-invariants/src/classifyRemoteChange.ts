@@ -22,29 +22,31 @@ export const classifyRemoteChange = (
 ): RemoteChangeClass => {
   const { diskHash, lastAppliedHash, remoteHash, lastPersistedHash } = input;
 
+  // Rule 1
   if (diskHash === null || lastAppliedHash === null) {
     return "no_change";
   }
 
+  // Rule 2
   if (remoteHash === diskHash) {
     return "no_change";
   }
 
-  // In-flight write detection: we've saved but subscription hasn't caught up
-  const isInFlight =
-    lastPersistedHash !== null && lastPersistedHash !== lastAppliedHash;
-
-  if (isInFlight) {
-    if (remoteHash === lastPersistedHash) return "self_echo";
-    if (remoteHash === lastAppliedHash) return "remote_behind";
-
-    // Subscription showing stale data - suppress false conflict
-    return "no_change";
+  // Rule 3
+  if (lastPersistedHash !== null && remoteHash === lastPersistedHash) {
+    return "self_echo";
   }
 
+  // Rule 4
+  if (remoteHash === lastAppliedHash) {
+    return "remote_behind";
+  }
+
+  // Rule 5
   if (detectConflict(diskHash, lastAppliedHash, remoteHash)) {
     return "true_divergence";
   }
 
+  // Rule 6
   return "no_change";
 };

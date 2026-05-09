@@ -90,6 +90,21 @@ describe("classifyRemoteChange", () => {
     ).toBe("no_change");
   });
 
+  test("concurrent edit during save is true_divergence, not suppressed", () => {
+    // User saved C from base A (lastPersisted=C, lastApplied=A still).
+    // Concurrent edit D arrives before self-echo. Must be true_divergence,
+    // not no_change — otherwise data loss: D silently overwrites C after
+    // self-echo updates lastApplied to C, making localChanged false.
+    expect(
+      classifyRemoteChange({
+        diskHash: "C",
+        lastAppliedHash: "A",
+        remoteHash: "D",
+        lastPersistedHash: "C",
+      }),
+    ).toBe("true_divergence");
+  });
+
   test("order: self_echo before remote_behind when both could apply", () => {
     const lastApplied = "A";
     const lastPersisted = "A";
